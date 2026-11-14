@@ -102,15 +102,18 @@ struct DeviceView: View {
 
     // guscio nero opaco, con il bordo appena illuminato
     private func caseShape(_ s: Double) -> some View {
+        // in passi separati: con le versioni più vecchie di Xcode un'unica espressione è troppo lenta da compilare
         let shape = RoundedRectangle(cornerRadius: Geo.corner * s, style: .continuous)
-        return shape
-            .fill(LinearGradient(colors: [.caseTop, .caseLow], startPoint: .top, endPoint: .bottom))
-            .overlay(shape.fill(RadialGradient(colors: [.white.opacity(0.05), .clear], center: .init(x: 0.3, y: 0.1),
-                                               startRadius: 0, endRadius: 60 * s)))
-            .background(Ellipse().fill(Color.black.opacity(0.45)).blur(radius: 18)
-                .frame(width: Geo.W * s * 1.05, height: 16 * s).offset(y: Geo.D * s / 2 + 2 * s))
-            .overlay(shape.strokeBorder(LinearGradient(colors: [.white.opacity(0.22), .white.opacity(0.04)],
-                                                       startPoint: .top, endPoint: .bottom), lineWidth: 1.2))
+        let body: LinearGradient = LinearGradient(colors: [.caseTop, .caseLow], startPoint: .top, endPoint: .bottom)
+        let sheen: RadialGradient = RadialGradient(colors: [.white.opacity(0.05), .clear], center: .init(x: 0.3, y: 0.1),
+                                                   startRadius: 0, endRadius: 60 * s)
+        let rim: LinearGradient = LinearGradient(colors: [.white.opacity(0.22), .white.opacity(0.04)],
+                                                 startPoint: .top, endPoint: .bottom)
+        let floorShadow: some View = Ellipse().fill(Color.black.opacity(0.45)).blur(radius: 18)
+            .frame(width: Geo.W * s * 1.05, height: 16 * s).offset(y: Geo.D * s / 2 + 2 * s)
+        let base: some View = shape.fill(body).overlay(shape.fill(sheen))
+        let edged: some View = base.background(floorShadow).overlay(shape.strokeBorder(rim, lineWidth: 1.2))
+        return edged
             .overlay(shape.inset(by: 1.2 * s).strokeBorder(Color.black.opacity(0.35), lineWidth: 0.6 * s))
             .shadow(color: .black.opacity(0.45), radius: 22, y: 14)
     }
