@@ -48,6 +48,8 @@ class CtrlCallbacks : public NimBLECharacteristicCallbacks {
 // sulla USB ogni messaggio è una riga: '@' + tipo + contenuto in testo.
 // I valori di un byte (tasto, verso, pagina...) diventano numeri: "@P4", "@T-1".
 void sendUsb(char type, const uint8_t* data, size_t len) {
+    // il computer è in ascolto: aspetta che ci sia posto (al massimo 200 ms), così niente va perso
+    for (uint32_t t0 = millis(); Serial.availableForWrite() < (int)len + 8 && millis() - t0 < 200; ) delay(1);
     char head[2] = {'@', type};
     Serial.write((const uint8_t*)head, 2);
     if (len) {

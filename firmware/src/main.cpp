@@ -189,6 +189,7 @@ void goToSleep() {
 // ---------- avvio ----------
 void setup() {
     Serial.setRxBufferSize(1024);           // configuratore web via USB: righe fino a ~200 caratteri
+    Serial.setTxBufferSize(1024);
     Serial.begin(115200);
     Serial.setTxTimeoutMs(0);               // senza nessuno in ascolto sulla USB non si aspetta mai
     for (uint8_t r = 0; r < 3; r++) { pinMode(ROW_PINS[r], OUTPUT); digitalWrite(ROW_PINS[r], HIGH); }
