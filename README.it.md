@@ -97,9 +97,16 @@ I file sono in `hardware/stl/`.
 
 ## Personalizzare i tasti
 
+| | Funziona su | Come |
+|---|---|---|
+| **[Configuratore web](https://ziocola.github.io/macropad-c3/configurator.html)** | Windows, macOS, Linux (Chrome o Edge) | Cavo USB, oppure Bluetooth dove il browser vede il macropad |
+| **[Macropad Config per Mac](https://github.com/Ziocola/macropad-c3/releases/latest/download/Macropad-Config-macOS.zip)** | macOS 14 o successivo, Apple silicon e Intel | Bluetooth |
+
+Entrambi modificano la stessa configurazione, salvata sul macropad. L'app per Mac non è autenticata da Apple. La prima volta che la apri, vai in *Impostazioni di Sistema → Privacy e sicurezza* e clicca **Apri comunque**. Se macOS la blocca ancora, esegui `xattr -dr com.apple.quarantine "/Applications/Macropad Config.app"`.
+
 - **Nel firmware:** le pagine predefinite sono in [`firmware/src/keymap.h`](firmware/src/keymap.h).
-- **Via Bluetooth, senza riprogrammare:** il firmware riceve la configurazione completa in JSON e la salva in memoria. Il formato è in [`store.cpp`](firmware/src/store.cpp). C'è un esempio con una pagina per Autodesk Fusion in [`docs/example_config_fusion.json`](docs/example_config_fusion.json).
-- **App per macOS:** in [`app/`](app) c'è **Macropad Config**, per modificare, riordinare e provare le pagine. Si compila con `./build_app.sh` (serve Xcode).
+- **Protocollo:** il firmware riceve la configurazione completa in JSON via Bluetooth, oppure come righe di testo via USB, e la salva in memoria. Il protocollo è descritto in [`app_link.h`](firmware/src/app_link.h) e il formato in [`store.cpp`](firmware/src/store.cpp). C'è un esempio con una pagina per Autodesk Fusion in [`docs/example_config_fusion.json`](docs/example_config_fusion.json).
+- **Sorgenti dell'app per Mac:** in [`app/`](app). Si compila con `./build_app.sh`, oppure con `./package_release.sh` per lo zip universale (serve Xcode).
 
 ## Licenza
 

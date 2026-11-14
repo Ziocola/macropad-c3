@@ -1,4 +1,5 @@
-// Collegamento Bluetooth con l'app Macropad Config (servizio a parte, accanto alla tastiera)
+// Collegamento con l'app Macropad Config (Bluetooth, servizio a parte accanto alla tastiera)
+// e con il configuratore web (cavo USB, righe di testo: vedi in fondo).
 //
 // Messaggi dall'app (primo byte = comando):
 //   'G' configurazione attuale   'F' configurazione predefinita   'S' stato
@@ -8,6 +9,12 @@
 //   'D' + pezzo, 'E' fine JSON   'K' salvato   'X' + errore   'S' + JSON di stato
 //   'P'/'R' + n tasto premuto/rilasciato   'T' + verso manopola   'C' + 1/0 pulsante della manopola
 //   'N' + pagina attuale
+//
+// Sulla USB (115200, ma la velocità non conta) ogni messaggio è una riga che inizia con '@':
+//   dal computer: "@G" "@F" "@S" "@M0".."@M2" "@B" "@D<pezzo di JSON, max ~200 caratteri>" "@E" "@Q" (fine)
+//   dal macropad: "@D..." "@E" "@K" "@X<errore>" "@S{...}" "@A" (pronto per il pezzo dopo, dopo @B e ogni @D)
+//                 "@P4" "@R4" "@T1" / "@T-1" "@C1" "@N2"
+// Le righe senza '@' sono messaggi di prova e vanno ignorate. Senza richieste per 15 s la USB smette di inviare avvisi.
 #pragma once
 #include <Arduino.h>
 

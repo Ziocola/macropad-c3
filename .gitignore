@@ -6,3 +6,4 @@ app/.build/
 # the web flasher binary is built by GitHub Actions
 web/firmware/
 .DS_Store
+app/dist/

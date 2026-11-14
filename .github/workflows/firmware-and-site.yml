@@ -55,6 +55,9 @@ jobs:
           cp "$B/firmware.bin"         dist/macropad-c3-${{ steps.ver.outputs.version }}-app.bin
           cp -R web/. site/
           cp "$B/firmware.factory.bin" site/firmware/macropad-c3.bin
+          # default pages for the web configurator, read from firmware/src/keymap.h
+          python3 app/tools/defaults_json.py
+          python3 -c "import re; s=open('app/Sources/MacropadConfig/DefaultConfig.swift').read(); open('site/default_config.json','w').write(re.search(r'#\"(.*)\"#', s, re.S).group(1))"
           python3 - <<'EOF'
           import json
           m = json.load(open("site/manifest.json"))
@@ -89,3 +92,17 @@ jobs:
     steps:
       - id: deployment
         uses: actions/deploy-pages@v4
+
+  mac-app:
+    # the macOS configuration app, attached to tagged releases
+    if: startsWith(github.ref, 'refs/tags/v')
+    needs: build
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build Macropad Config.app (universal, ad-hoc signed)
+        run: app/package_release.sh
+      - name: Attach to the release
+        uses: softprops/action-gh-release@v2
+        with:
+          files: app/dist/Macropad-Config-macOS.zip

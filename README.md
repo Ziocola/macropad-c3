@@ -105,9 +105,16 @@ A vector version is in [`docs/images/wiring.svg`](docs/images/wiring.svg).
 
 ## Customise the keys
 
+| | Works on | How |
+|---|---|---|
+| **[Web configurator](https://ziocola.github.io/macropad-c3/configurator.html)** | Windows, macOS, Linux (Chrome or Edge) | USB cable, or Bluetooth where the browser can see the macropad |
+| **[Macropad Config for Mac](https://github.com/Ziocola/macropad-c3/releases/latest/download/Macropad-Config-macOS.zip)** | macOS 14+, Apple silicon and Intel | Bluetooth |
+
+Both edit the same layout, which is stored on the macropad. The Mac app isn't notarized. The first time you open it, go to *System Settings → Privacy & Security* and click **Open Anyway**. If macOS still refuses, run `xattr -dr com.apple.quarantine "/Applications/Macropad Config.app"`.
+
 - **In the firmware:** the default pages are in [`firmware/src/keymap.h`](firmware/src/keymap.h). Write one line per key, for example `KEY("Copy", PRI, K_C)`, where `PRI` is Cmd on Mac and Ctrl on Windows.
-- **Over Bluetooth, no reflashing:** the firmware exposes a BLE service that accepts the whole layout as JSON and stores it in flash. The format is in [`store.cpp`](firmware/src/store.cpp), and [`docs/example_config_fusion.json`](docs/example_config_fusion.json) is an example with an Autodesk Fusion page.
-- **macOS app:** [`app/`](app) has **Macropad Config**, a SwiftUI app to edit, reorder and test pages with a live view of the device. Build it with `./build_app.sh` (Xcode required).
+- **Protocol:** the firmware accepts the whole layout as JSON over BLE, or as text lines over USB, and stores it in flash. See [`app_link.h`](firmware/src/app_link.h) for the protocol and [`store.cpp`](firmware/src/store.cpp) for the format. [`docs/example_config_fusion.json`](docs/example_config_fusion.json) is an example with an Autodesk Fusion page.
+- **Mac app source:** [`app/`](app). Build it with `./build_app.sh`, or run `./package_release.sh` for the universal zip (Xcode required).
 
 ## Repository layout
 

@@ -1,0 +1,1012 @@
+<!doctype html>
+<html lang="en" data-lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Macropad C3 Configurator</title>
+<meta name="description" content="Change what every key and the knob of your Macropad C3 do, from Chrome or Edge on Windows, macOS or Linux.">
+<meta name="theme-color" content="#141518">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect x='2' y='2' width='28' height='28' rx='7' fill='%23232428'/%3E%3Cg fill='%23f57a1f'%3E%3Crect x='7' y='7' width='5' height='5' rx='1'/%3E%3Crect x='13.5' y='7' width='5' height='5' rx='1'/%3E%3Crect x='20' y='7' width='5' height='5' rx='1'/%3E%3Crect x='7' y='13.5' width='5' height='5' rx='1'/%3E%3Crect x='13.5' y='13.5' width='5' height='5' rx='1'/%3E%3Crect x='20' y='13.5' width='5' height='5' rx='1'/%3E%3Crect x='7' y='20' width='5' height='5' rx='1'/%3E%3Crect x='13.5' y='20' width='5' height='5' rx='1'/%3E%3Crect x='20' y='20' width='5' height='5' rx='1'/%3E%3C/g%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;600&family=VT323&display=swap">
+<style>
+:root {
+  --bg: #141518; --bg-2: #1b1c20; --card: #202227; --card-2: #26282e; --line: #2f3238; --line-2: #3a3d44;
+  --fg: #ecebe8; --fg-2: #b4b3ae; --fg-3: #85847f;
+  --accent: #f57a1f; --accent-2: #ff9a4d; --accent-ink: #1a0d03; --accent-soft: rgba(245,122,31,.12);
+  --ok: #57c78a; --err: #ff6b5e; --oled: #050608; --oled-ink: #9fe2ff;
+  --radius: 16px;
+  --sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", sans-serif;
+  --display: "Space Grotesk", "Inter", ui-sans-serif, system-ui, sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  --pixel: "VT323", "JetBrains Mono", ui-monospace, monospace;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font: 400 15px/1.55 var(--sans); padding-bottom: env(safe-area-inset-bottom, 0px); }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); background: var(--bg); z-index: 31; }
+a { color: var(--accent-2); text-decoration: none; }
+a:hover { text-decoration: underline; }
+button, input, select { font: inherit; color: inherit; }
+h1, h2, h3 { font-family: var(--display); letter-spacing: -.015em; margin: 0; text-wrap: balance; }
+code, kbd { font-family: var(--mono); font-size: .86em; }
+kbd { background: var(--card-2); border: 1px solid var(--line-2); border-bottom-width: 2px; border-radius: 6px; padding: .05em .4em; }
+.wrap { max-width: 1240px; margin: 0 auto; padding-left: max(18px, env(safe-area-inset-left, 0px)); padding-right: max(18px, env(safe-area-inset-right, 0px)); }
+.eyebrow { font: 600 .72rem/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; color: var(--accent); }
+.muted { color: var(--fg-3); }
+[hidden] { display: none !important; }
+
+nav.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 30; background: rgba(20,21,24,.86); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-bottom: 1px solid var(--line); }
+nav.top .wrap { display: flex; align-items: center; gap: 18px; height: 58px; }
+.brand { display: flex; align-items: center; gap: 10px; font: 700 1rem var(--display); color: var(--fg); }
+.brand:hover { text-decoration: none; }
+.brand svg { width: 26px; height: 26px; }
+.brand small { font: 500 .78rem var(--sans); color: var(--fg-3); }
+.nav-right { margin-left: auto; display: flex; align-items: center; gap: 16px; font-size: .9rem; }
+.nav-right a { color: var(--fg-2); }
+.lang { display: flex; border: 1px solid var(--line-2); border-radius: 999px; overflow: hidden; }
+.lang button { background: none; border: 0; color: var(--fg-3); font: 600 .72rem var(--mono); padding: 6px 10px; cursor: pointer; }
+.lang button[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); }
+@media (max-width: 560px) { .brand small, .nav-right a { display: none; } }
+
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 10px 16px; border-radius: 11px; font-weight: 600; font-size: .92rem; border: 1px solid transparent; cursor: pointer; background: var(--card-2); border-color: var(--line-2); color: var(--fg); transition: background .12s, border-color .12s, transform .12s; white-space: nowrap; }
+.btn:hover:not(:disabled) { border-color: var(--fg-3); }
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+.btn svg { width: 17px; height: 17px; flex: none; }
+.btn-primary { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.btn-primary:hover:not(:disabled) { background: var(--accent-2); border-color: var(--accent-2); }
+.btn-sm { padding: 6px 10px; font-size: .82rem; border-radius: 9px; }
+.btn-icon { padding: 7px; }
+.btn.on { border-color: var(--accent); color: var(--accent); background: var(--accent-soft); }
+
+/* connection */
+.conn { display: grid; grid-template-columns: 1fr auto; gap: 18px 28px; align-items: center; padding-block: 26px; }
+.conn h1 { font-size: clamp(1.5rem, 3vw, 2rem); margin-top: 8px; }
+.conn p { color: var(--fg-2); margin: 8px 0 0; max-width: 70ch; }
+.conn-actions { display: flex; flex-wrap: wrap; gap: 10px; justify-content: flex-end; }
+.status { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; grid-column: 1 / -1; }
+.pill { display: inline-flex; align-items: center; gap: 7px; font: 500 .8rem var(--mono); border: 1px solid var(--line-2); border-radius: 999px; padding: 5px 11px; color: var(--fg-2); background: var(--bg-2); }
+.pill .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--fg-3); }
+.pill.live .dot { background: var(--ok); box-shadow: 0 0 0 3px rgba(87,199,138,.18); }
+.pill.warn { border-color: rgba(255,107,94,.4); color: #ffb3ab; }
+@media (max-width: 760px) { .conn { grid-template-columns: 1fr; } .conn-actions { justify-content: flex-start; } }
+
+/* editor layout */
+.editor { display: grid; grid-template-columns: 230px minmax(0, 1fr) 380px; gap: 18px; align-items: start; padding-bottom: 110px; }
+@media (max-width: 1100px) { .editor { grid-template-columns: 210px minmax(0, 1fr); } .inspector { grid-column: 1 / -1; } }
+@media (max-width: 720px) { .editor { grid-template-columns: 1fr; } }
+.panel { background: var(--card); border: 1px solid var(--line); border-radius: var(--radius); }
+.panel-h { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 14px 16px 10px; }
+.panel-h h2 { font-size: .98rem; }
+
+/* pages list */
+.pages ol { list-style: none; margin: 0; padding: 0 8px 8px; display: grid; gap: 4px; }
+.page-item { display: grid; grid-template-columns: 22px 1fr; gap: 8px; align-items: center; padding: 9px 10px; border-radius: 11px; cursor: pointer; border: 1px solid transparent; background: none; width: 100%; text-align: left; }
+.page-item:hover { background: var(--card-2); }
+.page-item.sel { background: var(--accent-soft); border-color: rgba(245,122,31,.4); }
+.page-item .num { font: 600 .78rem var(--mono); color: var(--fg-3); }
+.page-item.sel .num { color: var(--accent); }
+.page-item b { display: block; font: 600 .92rem var(--display); }
+.page-item span { font-size: .78rem; color: var(--fg-3); }
+.page-item .ondev { color: var(--ok); }
+.page-tools { display: flex; flex-wrap: wrap; gap: 6px; padding: 8px 12px 14px; border-top: 1px solid var(--line); }
+
+/* center: device */
+.center { display: grid; gap: 16px; min-width: 0; }
+.page-name { display: flex; align-items: center; gap: 12px; padding: 14px 16px; flex-wrap: wrap; }
+.page-name label { font: 600 .74rem var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--fg-3); }
+.txt { background: var(--bg-2); border: 1px solid var(--line-2); border-radius: 10px; padding: 9px 12px; min-width: 0; outline: none; }
+.txt:focus { border-color: var(--accent); }
+.page-name .txt { font: 600 1.05rem var(--display); width: 11ch; text-transform: uppercase; }
+.counter { font: .75rem var(--mono); color: var(--fg-3); }
+.stage { padding: 28px 18px; display: grid; place-items: center; background: radial-gradient(ellipse at 50% 40%, #1f2126, var(--card) 70%); }
+.device { width: min(100%, 390px); background: linear-gradient(160deg, #2c2e34, #222328); border-radius: 34px; padding: 24px; box-shadow: 0 30px 60px -22px rgba(0,0,0,.75), inset 0 1px 0 rgba(255,255,255,.06); border: 1px solid #34363d; }
+.device-top { display: flex; align-items: center; gap: 18px; margin-bottom: 20px; }
+.oled { flex: 1; aspect-ratio: 2 / 1; background: var(--oled); border-radius: 6px; border: 3px solid #0d0e11; padding: 5px 7px; font-family: var(--pixel); color: var(--oled-ink); display: grid; grid-template-rows: auto 1fr auto; gap: 3px; min-width: 0; }
+.oled .hdr { display: flex; justify-content: space-between; gap: 6px; font-size: 14px; line-height: 1; white-space: nowrap; overflow: hidden; }
+.oled .os { background: var(--oled-ink); color: var(--oled); padding: 0 3px; border-radius: 2px; }
+.oled .grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 2px; }
+.oled .grid span { border: 1px solid var(--oled-ink); border-radius: 3px; font-size: 12.5px; line-height: 1.05; text-align: center; padding: 1px 0; overflow: hidden; white-space: nowrap; }
+.oled .grid span.on { background: var(--oled-ink); color: var(--oled); }
+.oled .grid span.empty { border-color: transparent; }
+.oled .foot { text-align: center; font-size: 13px; line-height: 1; white-space: nowrap; overflow: hidden; }
+.knob { width: 74px; height: 74px; flex: none; border-radius: 50%; border: 0; cursor: pointer; background: repeating-conic-gradient(from 0deg, #f57a1f 0 5deg, #d9600c 5deg 10deg); box-shadow: 0 6px 14px rgba(0,0,0,.5); position: relative; transition: transform .2s; }
+.knob::after { content: ""; position: absolute; inset: 9px; border-radius: 50%; background: radial-gradient(circle at 40% 35%, #ff9a4d, #f57a1f 60%, #d9600c); }
+.knob::before { content: ""; position: absolute; z-index: 1; left: 50%; top: 13px; width: 3px; height: 12px; margin-left: -1.5px; border-radius: 2px; background: rgba(26,13,3,.55); }
+.knob.sel, .key.sel { outline: 3px solid var(--fg); outline-offset: 4px; }
+.knob.pressed { transform: scale(.94); }
+.keys { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+.key { aspect-ratio: 1; border: 0; border-radius: 12px; cursor: pointer; background: linear-gradient(180deg, #ff8a35, #f57a1f); box-shadow: 0 5px 0 #b9520a, 0 9px 14px rgba(0,0,0,.45); color: var(--accent-ink); padding: 6px; display: grid; align-content: center; gap: 2px; min-width: 0; overflow: hidden; transition: transform .06s, box-shadow .06s; }
+.key b { font: 700 .86rem var(--sans); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.key small { font: 500 .66rem var(--mono); opacity: .75; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.key.empty { background: linear-gradient(180deg, #4a4c52, #3d3f45); box-shadow: 0 5px 0 #2a2b30, 0 9px 14px rgba(0,0,0,.45); color: var(--fg-3); }
+.key.down { transform: translateY(4px); box-shadow: 0 1px 0 #b9520a, 0 3px 6px rgba(0,0,0,.4); }
+.stage-hint { font-size: .82rem; color: var(--fg-3); margin-top: 14px; text-align: center; }
+
+/* inspector */
+.inspector { padding-bottom: 6px; }
+.insp-body { padding: 4px 16px 16px; display: grid; gap: 16px; }
+.field { display: grid; gap: 7px; }
+.field > label, .field > .lbl { font: 600 .72rem var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--fg-3); }
+.row { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.seg { display: inline-flex; background: var(--bg-2); border: 1px solid var(--line-2); border-radius: 11px; padding: 3px; gap: 2px; flex-wrap: wrap; }
+.seg button { background: none; border: 0; padding: 6px 11px; border-radius: 8px; cursor: pointer; color: var(--fg-2); font-size: .85rem; font-weight: 500; }
+.seg button[aria-pressed="true"] { background: var(--card-2); color: var(--fg); box-shadow: inset 0 0 0 1px var(--line-2); }
+select.txt { padding: 8px 10px; max-width: 100%; }
+.combo { background: var(--bg-2); border: 1px solid var(--line); border-radius: 12px; padding: 12px; display: grid; gap: 10px; }
+.combo-h { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.combo-h b { font-size: .86rem; }
+.combo-show { font: 600 .95rem var(--mono); color: var(--accent-2); min-height: 1.4em; }
+.mods { display: flex; flex-wrap: wrap; gap: 6px; }
+.mod { border: 1px solid var(--line-2); background: var(--card); border-radius: 8px; padding: 5px 9px; font: 600 .78rem var(--mono); cursor: pointer; color: var(--fg-2); }
+.mod[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--accent-ink); }
+.rec { border-color: rgba(245,122,31,.5); }
+.rec.listening { background: var(--accent); color: var(--accent-ink); animation: pulse 1s infinite; }
+@keyframes pulse { 50% { box-shadow: 0 0 0 5px rgba(245,122,31,.25); } }
+.check { display: flex; align-items: center; gap: 9px; cursor: pointer; font-size: .9rem; color: var(--fg-2); }
+.check input { width: 17px; height: 17px; accent-color: var(--accent); }
+.note { font-size: .8rem; color: var(--fg-3); }
+.knob-dirs { display: grid; gap: 12px; }
+.dir-title { display: flex; align-items: center; gap: 8px; font-weight: 600; font-size: .9rem; }
+.dir-title svg { width: 18px; height: 18px; color: var(--accent); }
+hr.sep { border: 0; border-top: 1px solid var(--line); margin: 2px 0; }
+
+/* bottom bar */
+.bar { position: fixed; left: 0; right: 0; bottom: 0; z-index: 25; background: rgba(27,28,32,.94); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border-top: 1px solid var(--line); padding-bottom: env(safe-area-inset-bottom, 0px); }
+.bar .wrap { display: flex; align-items: center; gap: 10px; padding-block: 12px; flex-wrap: wrap; }
+.bar .msg { font-size: .88rem; color: var(--fg-2); margin-right: auto; display: flex; align-items: center; gap: 8px; min-width: 0; }
+.bar .msg.ok { color: var(--ok); }
+.bar .msg.err { color: var(--err); }
+.dirty-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); flex: none; }
+
+dialog { background: var(--card); color: var(--fg); border: 1px solid var(--line-2); border-radius: 20px; padding: 0; width: min(520px, calc(100vw - 32px)); }
+dialog::backdrop { background: rgba(0,0,0,.6); }
+.dlg-h { padding: 20px 22px 6px; }
+.dlg-b { padding: 10px 22px; display: grid; gap: 16px; }
+.dlg-f { padding: 14px 22px 20px; display: flex; justify-content: flex-end; gap: 10px; }
+.num-in { width: 7ch; }
+.unsupported { margin-top: 10px; }
+</style>
+</head>
+<body>
+
+<nav class="top">
+  <div class="wrap">
+    <a class="brand" href="./">
+      <svg viewBox="0 0 32 32" aria-hidden="true"><rect x="2" y="2" width="28" height="28" rx="7" fill="#26282e"/><g fill="#f57a1f"><rect x="7" y="7" width="5" height="5" rx="1"/><rect x="13.5" y="7" width="5" height="5" rx="1"/><rect x="20" y="7" width="5" height="5" rx="1"/><rect x="7" y="13.5" width="5" height="5" rx="1"/><rect x="13.5" y="13.5" width="5" height="5" rx="1"/><rect x="20" y="13.5" width="5" height="5" rx="1"/><rect x="7" y="20" width="5" height="5" rx="1"/><rect x="13.5" y="20" width="5" height="5" rx="1"/><rect x="20" y="20" width="5" height="5" rx="1"/></g></svg>
+      <span>Macropad C3 <small data-t="configurator"></small></span>
+    </a>
+    <div class="nav-right">
+      <a href="./" data-t="home"></a>
+      <div class="lang" role="group" aria-label="Language">
+        <button type="button" data-set-lang="en" aria-pressed="true">EN</button>
+        <button type="button" data-set-lang="it" aria-pressed="false">IT</button>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="wrap">
+  <section class="conn">
+    <div>
+      <div class="eyebrow" data-t="eyebrow"></div>
+      <h1 data-t="title"></h1>
+      <p data-t="intro"></p>
+    </div>
+    <div class="conn-actions">
+      <button class="btn btn-primary" id="btn-usb" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2v14M8 6l4-4 4 4M7 11v3a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2v-3"/><circle cx="12" cy="19" r="2"/></svg>
+        <span data-t="connectUsb"></span>
+      </button>
+      <button class="btn" id="btn-ble" type="button">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m7 7 10 10-5 5V2l5 5L7 17"/></svg>
+        <span data-t="connectBle"></span>
+      </button>
+      <button class="btn" id="btn-disc" type="button" hidden>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+        <span data-t="disconnect"></span>
+      </button>
+    </div>
+    <div class="status" id="status"></div>
+  </section>
+
+  <main class="editor">
+    <aside class="panel pages">
+      <div class="panel-h"><h2 data-t="pages"></h2><span class="counter" id="page-count"></span></div>
+      <ol id="page-list"></ol>
+      <div class="page-tools">
+        <button class="btn btn-sm" id="pg-add" type="button" data-t-title="addPage">＋ <span data-t="add"></span></button>
+        <button class="btn btn-sm btn-icon" id="pg-up" type="button" data-t-title="moveUp" aria-label="up">↑</button>
+        <button class="btn btn-sm btn-icon" id="pg-down" type="button" data-t-title="moveDown" aria-label="down">↓</button>
+        <button class="btn btn-sm" id="pg-dup" type="button" data-t="duplicate"></button>
+        <button class="btn btn-sm" id="pg-del" type="button" data-t="delete"></button>
+      </div>
+    </aside>
+
+    <div class="center">
+      <div class="panel page-name">
+        <label for="page-name" data-t="pageName"></label>
+        <input class="txt" id="page-name" maxlength="8" autocomplete="off" spellcheck="false">
+        <span class="counter" id="page-name-count"></span>
+        <span style="margin-left:auto" class="row">
+          <button class="btn btn-sm" id="btn-test" type="button" disabled><span data-t="testKeys"></span></button>
+          <button class="btn btn-sm" id="btn-settings" type="button"><span data-t="settings"></span></button>
+        </span>
+      </div>
+      <div class="panel stage">
+        <div class="device">
+          <div class="device-top">
+            <div class="oled" aria-hidden="true">
+              <div class="hdr"><span id="o-page"></span><span class="os" id="o-os">MAC</span></div>
+              <div class="grid" id="o-grid"></div>
+              <div class="foot" id="o-foot"></div>
+            </div>
+            <button class="knob" id="knob" type="button" data-t-label="knob"></button>
+          </div>
+          <div class="keys" id="keys"></div>
+        </div>
+        <div class="stage-hint" data-t="stageHint"></div>
+      </div>
+    </div>
+
+    <section class="panel inspector" id="inspector" aria-live="polite"></section>
+  </main>
+</div>
+
+<div class="bar">
+  <div class="wrap">
+    <div class="msg" id="msg"></div>
+    <button class="btn btn-sm" id="btn-open" type="button" data-t="openFile"></button>
+    <button class="btn btn-sm" id="btn-save" type="button" data-t="saveFile"></button>
+    <button class="btn btn-sm" id="btn-defaults" type="button" data-t="defaults"></button>
+    <button class="btn btn-primary" id="btn-send" type="button" disabled>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m22 2-7 20-4-9-9-4z"/><path d="M22 2 11 13"/></svg>
+      <span data-t="send"></span>
+    </button>
+    <input type="file" id="file-in" accept=".json,application/json" hidden>
+  </div>
+</div>
+
+<dialog id="dlg-settings">
+  <form method="dialog">
+    <div class="dlg-h"><h2 data-t="settings"></h2></div>
+    <div class="dlg-b">
+      <label class="check"><input type="checkbox" id="s-rev"> <span data-t="sRev"></span></label>
+      <label class="check"><input type="checkbox" id="s-rot"> <span data-t="sRot"></span></label>
+      <div class="field"><label for="s-steps" data-t="sSteps"></label>
+        <select class="txt" id="s-steps"><option value="4">4</option><option value="2">2</option><option value="1">1</option><option value="3">3</option></select>
+        <span class="note" data-t="sStepsNote"></span></div>
+      <div class="field"><label for="s-disp" data-t="sDisp"></label>
+        <div class="row"><input class="txt num-in" type="number" id="s-disp" min="0" max="3600"> <span class="muted" data-t="seconds"></span></div></div>
+      <div class="field"><label for="s-sleep" data-t="sSleep"></label>
+        <div class="row"><input class="txt num-in" type="number" id="s-sleep" min="0" max="240"> <span class="muted" data-t="minutes"></span></div></div>
+    </div>
+    <div class="dlg-f"><button class="btn btn-primary" value="ok" data-t="done"></button></div>
+  </form>
+</dialog>
+
+<dialog id="dlg-confirm">
+  <form method="dialog">
+    <div class="dlg-h"><h2 id="cf-title"></h2></div>
+    <div class="dlg-b"><p id="cf-text" style="margin:0;color:var(--fg-2)"></p></div>
+    <div class="dlg-f"><button class="btn" value="no" data-t="cancel"></button><button class="btn btn-primary" value="yes" id="cf-yes"></button></div>
+  </form>
+</dialog>
+
+<script>
+"use strict";
+// ============================================================
+// Texts
+// ============================================================
+const T = {
+  en: {
+    configurator: "Configurator", home: "Home", eyebrow: "Key configurator",
+    title: "Change what every key and the knob do.",
+    intro: "Connect the macropad with its USB cable (Chrome or Edge on Windows, macOS or Linux), edit the pages, then press Send. Bluetooth works too where the browser can see the macropad.",
+    connectUsb: "Connect via USB", connectBle: "Bluetooth (beta)", disconnect: "Disconnect",
+    pages: "Pages", add: "Add", addPage: "Add a page", moveUp: "Move the page up", moveDown: "Move the page down", duplicate: "Duplicate", delete: "Delete",
+    pageName: "Page name", testKeys: "Test the keys", testOn: "Testing: keys don’t reach the computer", settings: "Settings",
+    stageHint: "Click a key or the knob to edit it.", knob: "Knob",
+    openFile: "Open file…", saveFile: "Save to file", defaults: "Defaults", send: "Send to macropad",
+    notConnected: "Not connected: you can edit and save to a file.", connectedUsb: "USB", connectedBle: "Bluetooth",
+    battery: "battery", charging: "on USB", fw: "firmware", modeMac: "Mac mode", modeWin: "Windows mode",
+    reading: "Reading the macropad…", readDone: "Configuration read from the macropad.", sending: "Sending…",
+    sent: "Saved on the macropad.", sendErr: "The macropad refused it: ", unsent: "Changes not sent yet",
+    noSerial: "This browser can’t use USB devices. Use Chrome or Edge on a computer.",
+    noBle: "This browser can’t use Bluetooth devices. Use Chrome or Edge.",
+    bleHint: "If the macropad doesn’t appear, connect it with the USB cable instead.",
+    noResponse: "The macropad doesn’t answer. Is the firmware up to date (1.2 or later)? Update it from the home page.",
+    oldFw: "This firmware is too old for USB configuration: update it from the home page.",
+    lost: "Connection lost.",
+    key: "Key", kind: "Action", kNone: "Nothing", kKey: "Shortcut", kMedia: "Media", kWheel: "Scroll",
+    label: "Label on the display", labelNote: "Up to 8 characters, accented letters allowed.",
+    same: "Same on Mac and Windows", macCombo: "Mac", winCombo: "Windows", bothCombo: "Mac and Windows",
+    pri: "⌘ on Mac = Ctrl on Windows", priNote: "Turn it on for shortcuts like Copy: ⌘C on Mac, Ctrl+C on Windows.",
+    record: "Record", recording: "Press the keys…", keyLabel: "Key", noKey: "— none —",
+    recordNote: "Some combos are reserved by the browser or the system and can’t be recorded: pick them from the list.",
+    media: "Media key", wheel: "Scroll amount", wheelNote: "Negative scrolls down, positive scrolls up.",
+    knobLabel: "Knob label", preset: "Preset", custom: "Custom", cw: "Turn right", ccw: "Turn left",
+    knobPress: "Pressing the knob always moves to the next page (hold it: Mac ↔ Windows).",
+    sRev: "Reverse the knob direction", sRot: "Display upside down", sSteps: "Pulses per click",
+    sStepsNote: "4 for most EC11 encoders; try 2 if the knob skips clicks.", sDisp: "Display off after (0 = always on)",
+    sSleep: "Deep sleep after (0 = never)", seconds: "seconds", minutes: "minutes", done: "Done",
+    cancel: "Cancel", confirm: "Confirm",
+    delTitle: "Delete this page?", delText: "The page “{n}” and its keys will be removed.",
+    defTitle: "Restore the default pages?", defText: "Your pages will be replaced with the four default ones. Nothing is sent until you press Send.",
+    defDone: "Default pages restored: press Send to save them.",
+    fileOk: "File loaded: press Send to save it on the macropad.", fileErr: "This file isn’t a macropad configuration.",
+    maxPages: "8 pages at most.", newPage: "PAGE",
+  },
+  it: {
+    configurator: "Configuratore", home: "Home", eyebrow: "Configuratore dei tasti",
+    title: "Cambia cosa fanno i tasti e la manopola.",
+    intro: "Collega il macropad con il cavo USB (Chrome o Edge su Windows, macOS o Linux), modifica le pagine e premi Invia. Funziona anche via Bluetooth, dove il browser riesce a vedere il macropad.",
+    connectUsb: "Collega via USB", connectBle: "Bluetooth (beta)", disconnect: "Scollega",
+    pages: "Pagine", add: "Aggiungi", addPage: "Aggiungi una pagina", moveUp: "Sposta su la pagina", moveDown: "Sposta giù la pagina", duplicate: "Duplica", delete: "Elimina",
+    pageName: "Nome pagina", testKeys: "Prova i tasti", testOn: "In prova: i tasti non arrivano al computer", settings: "Impostazioni",
+    stageHint: "Clicca un tasto o la manopola per modificarlo.", knob: "Manopola",
+    openFile: "Apri file…", saveFile: "Salva su file", defaults: "Predefinite", send: "Invia al macropad",
+    notConnected: "Non collegato: puoi modificare e salvare su file.", connectedUsb: "USB", connectedBle: "Bluetooth",
+    battery: "batteria", charging: "su USB", fw: "firmware", modeMac: "modalità Mac", modeWin: "modalità Windows",
+    reading: "Lettura dal macropad…", readDone: "Configurazione letta dal macropad.", sending: "Invio…",
+    sent: "Salvata sul macropad.", sendErr: "Il macropad l'ha rifiutata: ", unsent: "Modifiche non ancora inviate",
+    noSerial: "Questo browser non può usare dispositivi USB. Usa Chrome o Edge su un computer.",
+    noBle: "Questo browser non può usare dispositivi Bluetooth. Usa Chrome o Edge.",
+    bleHint: "Se il macropad non compare, collegalo con il cavo USB.",
+    noResponse: "Il macropad non risponde. Il firmware è aggiornato (1.2 o successivo)? Aggiornalo dalla pagina principale.",
+    oldFw: "Questo firmware è troppo vecchio per la configurazione via USB: aggiornalo dalla pagina principale.",
+    lost: "Collegamento perso.",
+    key: "Tasto", kind: "Azione", kNone: "Niente", kKey: "Scorciatoia", kMedia: "Multimediale", kWheel: "Rotella",
+    label: "Etichetta sul display", labelNote: "Al massimo 8 caratteri, lettere accentate comprese.",
+    same: "Uguale su Mac e Windows", macCombo: "Mac", winCombo: "Windows", bothCombo: "Mac e Windows",
+    pri: "⌘ su Mac = Ctrl su Windows", priNote: "Attivalo per scorciatoie come Copia: ⌘C sul Mac, Ctrl+C su Windows.",
+    record: "Registra", recording: "Premi i tasti…", keyLabel: "Tasto", noKey: "— nessuno —",
+    recordNote: "Alcune combinazioni sono riservate dal browser o dal sistema e non si possono registrare: sceglile dall'elenco.",
+    media: "Tasto multimediale", wheel: "Quantità di scorrimento", wheelNote: "Negativo scorre in giù, positivo in su.",
+    knobLabel: "Etichetta della manopola", preset: "Modello", custom: "Personalizzata", cw: "Gira a destra", ccw: "Gira a sinistra",
+    knobPress: "Premere la manopola passa sempre alla pagina dopo (tenendola premuta: Mac ↔ Windows).",
+    sRev: "Inverti il verso della manopola", sRot: "Display capovolto", sSteps: "Impulsi per scatto",
+    sStepsNote: "4 per quasi tutti gli EC11; prova 2 se la manopola salta gli scatti.", sDisp: "Display spento dopo (0 = sempre acceso)",
+    sSleep: "Sonno profondo dopo (0 = mai)", seconds: "secondi", minutes: "minuti", done: "Fatto",
+    cancel: "Annulla", confirm: "Conferma",
+    delTitle: "Eliminare questa pagina?", delText: "La pagina “{n}” e i suoi tasti verranno tolti.",
+    defTitle: "Ripristinare le pagine predefinite?", defText: "Le tue pagine verranno sostituite dalle quattro predefinite. Niente viene inviato finché non premi Invia.",
+    defDone: "Pagine predefinite ripristinate: premi Invia per salvarle.",
+    fileOk: "File caricato: premi Invia per salvarlo sul macropad.", fileErr: "Questo file non è una configurazione del macropad.",
+    maxPages: "Al massimo 8 pagine.", newPage: "PAGINA",
+  },
+};
+let lang = "en";
+const t = (k) => (T[lang][k] ?? T.en[k] ?? k);
+
+// ============================================================
+// HID tables (same as the firmware and the macOS app)
+// ============================================================
+const MOD = { CTRL: 1, SHIFT: 2, ALT: 4, GUI: 8, PRI: 0x100 };
+const KEYS = (() => {
+  const k = [];
+  const L = (it, en) => ({ it, en });
+  for (let i = 0; i < 26; i++) k.push({ c: 0x04 + i, n: String.fromCharCode(65 + i), g: L("Lettere", "Letters") });
+  "1234567890".split("").forEach((d, i) => k.push({ c: 0x1E + i, n: d, g: L("Numeri", "Numbers") }));
+  for (let i = 1; i <= 12; i++) k.push({ c: 0x39 + i, n: "F" + i, g: L("Tasti funzione", "Function keys") });
+  [[0x52, "↑", "Freccia su", "Up"], [0x51, "↓", "Freccia giù", "Down"], [0x50, "←", "Freccia sinistra", "Left"], [0x4F, "→", "Freccia destra", "Right"],
+   [0x4A, "Home", "Inizio (Home)", "Home"], [0x4D, "End", "Fine (End)", "End"], [0x4B, "PgUp", "Pagina su", "Page Up"], [0x4E, "PgDn", "Pagina giù", "Page Down"]]
+    .forEach(([c, s, it, en]) => k.push({ c, s, n: { it, en }, g: L("Navigazione", "Navigation") }));
+  [[0x28, "Enter", "Invio", "Enter"], [0x29, "Esc", "Esc", "Esc"], [0x2B, "Tab", "Tab", "Tab"], [0x2C, "Space", "Spazio", "Space"],
+   [0x2A, "⌫", "Cancella ⌫", "Backspace ⌫"], [0x4C, "Del", "Canc avanti ⌦", "Delete ⌦"], [0x49, "Ins", "Ins", "Insert"], [0x46, "PrtSc", "Stamp (PrintScreen)", "Print Screen"]]
+    .forEach(([c, s, it, en]) => k.push({ c, s, n: { it, en }, g: L("Modifica", "Editing") }));
+  [[0x2D, "' ?", "- _"], [0x2E, "ì ^", "= +"], [0x2F, "è é", "[ {"], [0x30, "+ *", "] }"], [0x31, "ù §", "\\ |"], [0x33, "ò ç", "; :"],
+   [0x34, "à °", "' \""], [0x35, "\\ |", "` ~"], [0x36, ", ;", ", <"], [0x37, ". :", ". >"], [0x38, "- _", "/ ?"], [0x64, "< >", "ISO \\ |"]]
+    .forEach(([c, it, en]) => k.push({ c, n: { it, en }, g: L("Simboli (posizione sulla tastiera italiana)", "Symbols (US layout position)") }));
+  [[0x57, "+"], [0x56, "−"], [0x55, "×"], [0x54, "÷"], [0x58, "Enter"], [0x63, ","]].forEach(([c, s]) => k.push({ c, n: { it: s + " tastierino", en: "Keypad " + s }, s: "KP" + s, g: L("Tastierino", "Keypad") }));
+  for (let d = 0; d <= 9; d++) k.push({ c: d === 0 ? 0x62 : 0x58 + d, n: { it: d + " tastierino", en: "Keypad " + d }, s: "KP" + d, g: L("Tastierino", "Keypad") });
+  return k;
+})();
+const keyInfo = (c) => KEYS.find(k => k.c === c);
+const keyName = (c) => { const k = keyInfo(c); if (!k) return c ? "0x" + c.toString(16).toUpperCase() : ""; return typeof k.n === "string" ? k.n : k.n[lang]; };
+const keyShort = (c) => { const k = keyInfo(c); if (!k) return keyName(c); return k.s || (typeof k.n === "string" ? k.n : k.n[lang]); };
+
+// KeyboardEvent.code → HID usage (physical position, independent of the layout)
+const CODE2HID = (() => {
+  const m = {};
+  for (let i = 0; i < 26; i++) m["Key" + String.fromCharCode(65 + i)] = 0x04 + i;
+  "1234567890".split("").forEach((d, i) => m["Digit" + d] = 0x1E + i);
+  for (let i = 1; i <= 12; i++) m["F" + i] = 0x39 + i;
+  Object.assign(m, { Enter: 0x28, Escape: 0x29, Backspace: 0x2A, Tab: 0x2B, Space: 0x2C, Minus: 0x2D, Equal: 0x2E, BracketLeft: 0x2F, BracketRight: 0x30,
+    Backslash: 0x31, Semicolon: 0x33, Quote: 0x34, Backquote: 0x35, Comma: 0x36, Period: 0x37, Slash: 0x38, PrintScreen: 0x46, Insert: 0x49,
+    Home: 0x4A, PageUp: 0x4B, Delete: 0x4C, End: 0x4D, PageDown: 0x4E, ArrowRight: 0x4F, ArrowLeft: 0x50, ArrowDown: 0x51, ArrowUp: 0x52,
+    NumpadDivide: 0x54, NumpadMultiply: 0x55, NumpadSubtract: 0x56, NumpadAdd: 0x57, NumpadEnter: 0x58, NumpadDecimal: 0x63, IntlBackslash: 0x64, Numpad0: 0x62 });
+  for (let d = 1; d <= 9; d++) m["Numpad" + d] = 0x58 + d;
+  return m;
+})();
+
+const MEDIA = [
+  [0xCD, "Play / Pausa", "Play / Pause", "Play"], [0xB5, "Brano successivo", "Next track", "Succ."], [0xB6, "Brano precedente", "Previous track", "Prec."],
+  [0xB7, "Stop", "Stop", "Stop"], [0xB3, "Avanti veloce", "Fast forward", "Avanti"], [0xB4, "Riavvolgi", "Rewind", "Riavv."],
+  [0xE2, "Muto", "Mute", "Muto"], [0xE9, "Volume su", "Volume up", "Vol +"], [0xEA, "Volume giù", "Volume down", "Vol -"],
+  [0x6F, "Luminosità su", "Brightness up", "Luce +"], [0x70, "Luminosità giù", "Brightness down", "Luce -"],
+  [0x192, "Calcolatrice (Windows)", "Calculator (Windows)", "Calcolo"], [0x18A, "Posta (Windows)", "Mail (Windows)", "Posta"], [0x223, "Pagina iniziale del browser", "Browser home", "Home"],
+].map(([c, it, en, s]) => ({ c, n: { it, en }, s }));
+const mediaName = (c) => (MEDIA.find(m => m.c === c)?.n[lang]) ?? ("0x" + c.toString(16));
+
+const A = {
+  none: () => ({ l: "", t: 0 }),
+  key: (mods, key) => ({ l: "", t: 1, m: [mods, key], w: [mods, key] }),
+  media: (u) => ({ l: "", t: 2, u }),
+  wheel: (u) => ({ l: "", t: 3, u }),
+};
+const KNOB_PRESETS = [
+  { it: "Volume", en: "Volume", l: "Volume", cw: A.media(0xE9), ccw: A.media(0xEA) },
+  { it: "Scorrimento (rotella)", en: "Scrolling (wheel)", l: "Scorri", cw: A.wheel(-1), ccw: A.wheel(1) },
+  { it: "Schede del browser", en: "Browser tabs", l: "Schede", cw: A.key(MOD.CTRL, 0x2B), ccw: A.key(MOD.CTRL | MOD.SHIFT, 0x2B) },
+  { it: "Zoom", en: "Zoom", l: "Zoom", cw: A.key(MOD.PRI, 0x57), ccw: A.key(MOD.PRI, 0x56) },
+  { it: "Frecce su e giù", en: "Up and down arrows", l: "Frecce", cw: A.key(0, 0x51), ccw: A.key(0, 0x52) },
+  { it: "Frecce destra e sinistra", en: "Left and right arrows", l: "Frecce", cw: A.key(0, 0x4F), ccw: A.key(0, 0x50) },
+  { it: "Luminosità", en: "Brightness", l: "Luce", cw: A.media(0x6F), ccw: A.media(0x70) },
+  { it: "Annulla e ripeti", en: "Undo and redo", l: "Storia", cw: A.key(MOD.PRI | MOD.SHIFT, 0x1D), ccw: A.key(MOD.PRI, 0x1D) },
+];
+const sameBehaviour = (a, b) => a.t === b.t && (a.t === 1 ? JSON.stringify([a.m, a.w]) === JSON.stringify([b.m, b.w]) : a.t === 0 || a.u === b.u);
+
+// The display only has Latin-1 characters (accents included): no emoji or ⌘
+const displayText = (s, max) => Array.from(s).filter(ch => { const c = ch.codePointAt(0); return c >= 0x20 && c <= 0xFF && c !== 0x7F; }).slice(0, max).join("");
+
+function comboText(mods, key, mac) {
+  if (!key && !mods) return "—";
+  const p = [];
+  if (mac) {
+    if (mods & MOD.CTRL) p.push("⌃"); if (mods & MOD.ALT) p.push("⌥"); if (mods & MOD.SHIFT) p.push("⇧"); if (mods & (MOD.GUI | MOD.PRI)) p.push("⌘");
+    return p.join("") + keyShort(key);
+  }
+  if (mods & (MOD.CTRL | MOD.PRI)) p.push("Ctrl"); if (mods & MOD.ALT) p.push("Alt"); if (mods & MOD.SHIFT) p.push("Shift"); if (mods & MOD.GUI) p.push("Win");
+  if (key) p.push(keyShort(key));
+  return p.join("+");
+}
+function actionSummary(a) {
+  switch (a.t) {
+    case 1: { const same = a.m[0] === a.w[0] && a.m[1] === a.w[1]; return same ? comboText(a.m[0], a.m[1], isMacHost) : comboText(a.m[0], a.m[1], true) + " · " + comboText(a.w[0], a.w[1], false); }
+    case 2: return mediaName(a.u);
+    case 3: return (a.u > 0 ? "↑ " : "↓ ") + Math.abs(a.u);
+    default: return "";
+  }
+}
+const isMacHost = /Mac|iPhone|iPad/.test(navigator.platform || navigator.userAgent);
+
+// ============================================================
+// State
+// ============================================================
+let DEFAULTS = null;
+let cfg = null;
+let sel = { page: 0, target: "key", index: 0 };
+let dirty = false;
+let conn = null;           // { kind, write(type, payload), close() }
+let status = null;
+let testing = false;
+let pressed = new Set();
+let recording = null;      // { action, which }
+
+const $ = (id) => document.getElementById(id);
+const clone = (o) => JSON.parse(JSON.stringify(o));
+
+function normalize(c) {
+  if (!c || !Array.isArray(c.pages) || !c.pages.length || c.pages.length > 8) throw new Error("bad");
+  const act = (a) => {
+    a = a || {}; const o = { l: displayText(String(a.l ?? ""), 8), t: Number(a.t) || 0 };
+    if (o.t === 1) { o.m = [Number(a.m?.[0]) || 0, Number(a.m?.[1]) || 0]; o.w = [Number(a.w?.[0]) || 0, Number(a.w?.[1]) || 0]; }
+    else if (o.t === 2 || o.t === 3) o.u = Number(a.u) || (o.t === 2 ? 0xCD : -1);
+    else o.t = 0;
+    return o;
+  };
+  return {
+    v: 1,
+    set: { rev: !!c.set?.rev, rot: !!c.set?.rot, steps: Number(c.set?.steps) || 4, disp: Number(c.set?.disp ?? 60), sleep: Number(c.set?.sleep ?? 15) },
+    pages: c.pages.map(p => {
+      if (!Array.isArray(p.k) || p.k.length !== 9) throw new Error("bad");
+      return { n: displayText(String(p.n ?? ""), 8), k: p.k.map(act), kl: displayText(String(p.kl ?? ""), 8), cw: act(p.cw), ccw: act(p.ccw) };
+    }),
+  };
+}
+function setDirty(v = true) { dirty = v; renderBar(); }
+const page = () => cfg.pages[sel.page];
+
+// ============================================================
+// Rendering
+// ============================================================
+function applyTexts() {
+  document.querySelectorAll("[data-t]").forEach(el => el.textContent = t(el.dataset.t));
+  document.querySelectorAll("[data-t-title]").forEach(el => el.title = t(el.dataset.tTitle));
+  document.querySelectorAll("[data-t-label]").forEach(el => el.setAttribute("aria-label", t(el.dataset.tLabel)));
+  $("cf-yes").textContent = t("confirm");
+}
+function renderAll() { renderPages(); renderDevice(); renderInspector(); renderStatus(); renderBar(); }
+
+function renderPages() {
+  const ol = $("page-list"); ol.textContent = "";
+  cfg.pages.forEach((p, i) => {
+    const li = document.createElement("li");
+    const b = document.createElement("button"); b.type = "button"; b.className = "page-item" + (i === sel.page ? " sel" : "");
+    const onDev = status && status.page === i;
+    b.innerHTML = `<span class="num">${i + 1}</span><span><b></b><span></span></span>`;
+    b.querySelector("b").textContent = p.n || "—";
+    b.querySelector("span span").textContent = (p.kl ? "↻ " + p.kl : "") + (onDev ? "  ●" : "");
+    if (onDev) b.querySelector("span span").classList.add("ondev");
+    b.addEventListener("click", () => { sel.page = i; renderAll(); });
+    li.appendChild(b); ol.appendChild(li);
+  });
+  $("page-count").textContent = cfg.pages.length + "/8";
+  $("pg-add").disabled = cfg.pages.length >= 8; $("pg-dup").disabled = cfg.pages.length >= 8;
+  $("pg-del").disabled = cfg.pages.length <= 1;
+  $("pg-up").disabled = sel.page === 0; $("pg-down").disabled = sel.page >= cfg.pages.length - 1;
+  const name = $("page-name"); if (document.activeElement !== name) name.value = page().n;
+  $("page-name-count").textContent = Array.from(page().n).length + "/8";
+}
+
+function renderDevice() {
+  const p = page();
+  $("o-page").textContent = `${sel.page + 1}/${cfg.pages.length} ${p.n}`;
+  $("o-os").textContent = status && status.mac === false ? "WIN" : "MAC";
+  $("o-foot").textContent = testing ? "Prova: niente al computer" : "Manopola: " + p.kl;
+  const grid = $("o-grid"), keys = $("keys");
+  if (!grid.children.length) {
+    for (let i = 0; i < 9; i++) {
+      grid.appendChild(document.createElement("span"));
+      const b = document.createElement("button"); b.type = "button"; b.className = "key";
+      b.innerHTML = "<b></b><small></small>";
+      b.addEventListener("click", () => { sel.target = "key"; sel.index = i; renderDevice(); renderInspector(); });
+      keys.appendChild(b);
+    }
+  }
+  p.k.forEach((a, i) => {
+    const cell = grid.children[i], b = keys.children[i];
+    cell.textContent = a.l; cell.className = (a.l ? "" : "empty") + (pressed.has(i) ? " on" : "");
+    b.className = "key" + (a.t === 0 ? " empty" : "") + (sel.target === "key" && sel.index === i ? " sel" : "") + (pressed.has(i) ? " down" : "");
+    b.querySelector("b").textContent = a.l || (a.t === 0 ? "—" : "");
+    b.querySelector("small").textContent = actionSummary(a);
+    b.setAttribute("aria-label", `${t("key")} ${i + 1}: ${a.l || t("kNone")}`);
+  });
+  $("knob").classList.toggle("sel", sel.target === "knob");
+}
+
+function el(tag, attrs = {}, ...kids) {
+  const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) {
+    if (k === "class") e.className = v; else if (k === "text") e.textContent = v;
+    else if (k.startsWith("on")) e.addEventListener(k.slice(2), v); else if (v !== false && v != null) e.setAttribute(k, v === true ? "" : v);
+  }
+  kids.flat().forEach(k => k != null && e.appendChild(typeof k === "string" ? document.createTextNode(k) : k));
+  return e;
+}
+function seg(options, value, onPick) {
+  return el("div", { class: "seg", role: "group" }, options.map(([v, label]) =>
+    el("button", { type: "button", "aria-pressed": String(v === value), onclick: () => onPick(v), text: label })));
+}
+function changed() { setDirty(); renderDevice(); renderPages(); }
+
+function renderInspector() {
+  const box = $("inspector"); box.textContent = "";
+  const p = page();
+  if (sel.target === "key") {
+    const a = p.k[sel.index];
+    box.appendChild(el("div", { class: "panel-h" }, el("h2", { text: `${t("key")} ${sel.index + 1}` }), el("span", { class: "counter", text: `R${Math.floor(sel.index / 3)} · C${sel.index % 3}` })));
+    const body = el("div", { class: "insp-body" });
+    const lab = el("input", { class: "txt", maxlength: 16, value: a.l, autocomplete: "off", spellcheck: "false" });
+    const cnt = el("span", { class: "counter", text: Array.from(a.l).length + "/8" });
+    lab.addEventListener("input", () => { const v = displayText(lab.value, 8); if (v !== lab.value) lab.value = v; a.l = v; cnt.textContent = Array.from(v).length + "/8"; changed(); });
+    body.append(el("div", { class: "field" }, el("label", { text: t("label") }), el("div", { class: "row" }, lab, cnt), el("span", { class: "note", text: t("labelNote") })));
+    body.append(actionEditor(a, () => { renderInspector(); changed(); }, true));
+    box.appendChild(body);
+  } else {
+    box.appendChild(el("div", { class: "panel-h" }, el("h2", { text: t("knob") })));
+    const body = el("div", { class: "insp-body" });
+    const lab = el("input", { class: "txt", maxlength: 16, value: p.kl, autocomplete: "off", spellcheck: "false" });
+    lab.addEventListener("input", () => { const v = displayText(lab.value, 8); if (v !== lab.value) lab.value = v; p.kl = v; changed(); });
+    body.append(el("div", { class: "field" }, el("label", { text: t("knobLabel") }), lab));
+    const preset = el("select", { class: "txt" });
+    const cur = KNOB_PRESETS.findIndex(k => sameBehaviour(k.cw, p.cw) && sameBehaviour(k.ccw, p.ccw));
+    preset.append(el("option", { value: -1, text: t("custom") }));
+    KNOB_PRESETS.forEach((k, i) => preset.append(el("option", { value: i, text: k[lang] })));
+    preset.value = String(cur);
+    preset.addEventListener("change", () => {
+      const k = KNOB_PRESETS[Number(preset.value)]; if (!k) return;
+      p.cw = clone(k.cw); p.ccw = clone(k.ccw); p.kl = k.l; renderInspector(); changed();
+    });
+    body.append(el("div", { class: "field" }, el("label", { text: t("preset") }), preset));
+    body.append(el("hr", { class: "sep" }));
+    const dirs = el("div", { class: "knob-dirs" });
+    [["cw", "M21 12a9 9 0 1 1-3-6.7L21 8M21 3v5h-5"], ["ccw", "M3 12a9 9 0 1 0 3-6.7L3 8M3 3v5h5"]].forEach(([d, path]) => {
+      const svg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="${path}"/></svg>`;
+      const title = el("div", { class: "dir-title" }); title.innerHTML = svg; title.append(t(d));
+      dirs.append(el("div", { class: "field" }, title, actionEditor(p[d], () => { renderInspector(); changed(); }, false)));
+    });
+    body.append(dirs, el("p", { class: "note", text: t("knobPress") }));
+    box.appendChild(body);
+  }
+}
+
+function actionEditor(a, onChange, allowNone) {
+  const wrap = el("div", { class: "field" });
+  const kinds = [[1, t("kKey")], [2, t("kMedia")], [3, t("kWheel")]];
+  if (allowNone) kinds.unshift([0, t("kNone")]);
+  wrap.append(el("span", { class: "lbl", text: t("kind") }), seg(kinds, a.t, (v) => {
+    if (v === a.t) return;
+    a.t = v; delete a.m; delete a.w; delete a.u;
+    if (v === 1) { a.m = [MOD.PRI, 0]; a.w = [MOD.PRI, 0]; } else if (v === 2) a.u = 0xCD; else if (v === 3) a.u = -1;
+    onChange();
+  }));
+  if (a.t === 1) {
+    const same = a.m[0] === a.w[0] && a.m[1] === a.w[1];
+    const sameBox = el("input", { type: "checkbox" }); sameBox.checked = same;
+    sameBox.addEventListener("change", () => { if (sameBox.checked) a.w = [...a.m]; else if (a.m[0] & MOD.PRI) { a.m = [(a.m[0] & ~MOD.PRI) | MOD.GUI, a.m[1]]; a.w = [(a.w[0] & ~MOD.PRI) | MOD.CTRL, a.w[1]]; } onChange(); });
+    wrap.append(el("label", { class: "check" }, sameBox, el("span", { text: t("same") })));
+    if (same) wrap.append(comboEditor(a, "both", onChange));
+    else { wrap.append(comboEditor(a, "m", onChange)); wrap.append(comboEditor(a, "w", onChange)); }
+    wrap.append(el("span", { class: "note", text: t("recordNote") }));
+  } else if (a.t === 2) {
+    const s = el("select", { class: "txt" });
+    MEDIA.forEach(m => s.append(el("option", { value: m.c, text: m.n[lang] })));
+    if (!MEDIA.some(m => m.c === a.u)) s.append(el("option", { value: a.u, text: mediaName(a.u) }));
+    s.value = String(a.u);
+    s.addEventListener("change", () => { a.u = Number(s.value); onChange(); });
+    wrap.append(el("div", { class: "field" }, el("label", { text: t("media") }), s));
+  } else if (a.t === 3) {
+    const n = el("input", { class: "txt num-in", type: "number", min: -10, max: 10, value: a.u });
+    n.addEventListener("change", () => { let v = Math.max(-10, Math.min(10, Math.round(Number(n.value) || 0))); if (v === 0) v = -1; a.u = v; n.value = v; onChange(); });
+    wrap.append(el("div", { class: "field" }, el("label", { text: t("wheel") }), n, el("span", { class: "note", text: t("wheelNote") })));
+  }
+  return wrap;
+}
+
+function comboEditor(a, which, onChange) {
+  const src = which === "w" ? a.w : a.m;
+  const mac = which === "m" || (which === "both" && isMacHost);
+  const title = which === "both" ? t("bothCombo") : which === "m" ? t("macCombo") : t("winCombo");
+  const setCombo = (mods, key) => {
+    if (which === "both") { a.m = [mods, key]; a.w = [mods, key]; }
+    else if (which === "m") a.m = [mods, key]; else a.w = [mods, key];
+    onChange();
+  };
+  const box = el("div", { class: "combo" });
+  const show = el("div", { class: "combo-show", text: which === "both" ? comboText(src[0], src[1], true) + "   ·   " + comboText(src[0], src[1], false) : comboText(src[0], src[1], which === "m") });
+  const rec = el("button", { type: "button", class: "btn btn-sm rec", text: t("record") });
+  rec.addEventListener("click", () => startRecording(rec, which, setCombo));
+  box.append(el("div", { class: "combo-h" }, el("b", { text: title }), rec), show);
+  const mods = el("div", { class: "mods" });
+  const modDefs = [[MOD.CTRL, mac ? "⌃ Ctrl" : "Ctrl"], [MOD.ALT, mac ? "⌥ Option" : "Alt"], [MOD.SHIFT, "⇧ Shift"], [MOD.GUI, mac ? "⌘ Cmd" : "⊞ Win"]];
+  if (which === "both") modDefs.unshift([MOD.PRI, t("pri")]);
+  modDefs.forEach(([bit, label]) => mods.append(el("button", { type: "button", class: "mod", "aria-pressed": String(!!(src[0] & bit)), text: label, onclick: () => setCombo(src[0] ^ bit, src[1]) })));
+  box.append(mods);
+  const ks = el("select", { class: "txt" });
+  ks.append(el("option", { value: 0, text: t("noKey") }));
+  let grp = null, gname = "";
+  KEYS.forEach(k => { const g = k.g[lang]; if (g !== gname) { grp = el("optgroup", { label: g }); ks.append(grp); gname = g; } grp.append(el("option", { value: k.c, text: keyName(k.c) })); });
+  ks.value = String(src[1]);
+  ks.addEventListener("change", () => setCombo(src[0], Number(ks.value)));
+  box.append(el("div", { class: "row" }, el("span", { class: "muted", text: t("keyLabel") }), ks));
+  if (which === "both") box.append(el("span", { class: "note", text: t("priNote") }));
+  return box;
+}
+
+function startRecording(btn, which, setCombo) {
+  stopRecording();
+  btn.classList.add("listening"); btn.textContent = t("recording");
+  const handler = (e) => {
+    if (["Shift", "Control", "Alt", "Meta", "OS"].includes(e.key)) return;
+    e.preventDefault(); e.stopPropagation();
+    const hid = CODE2HID[e.code]; if (!hid) return;
+    let mods = (e.ctrlKey ? MOD.CTRL : 0) | (e.shiftKey ? MOD.SHIFT : 0) | (e.altKey ? MOD.ALT : 0) | (e.metaKey ? MOD.GUI : 0);
+    if (which === "both") {                      // ⌘ on a Mac or Ctrl on a PC becomes "⌘ on Mac = Ctrl on Windows"
+      const main = isMacHost ? MOD.GUI : MOD.CTRL;
+      if (mods & main) mods = (mods & ~main) | MOD.PRI;
+    }
+    stopRecording(); setCombo(mods, hid);
+  };
+  recording = { handler, btn };
+  window.addEventListener("keydown", handler, true);
+}
+function stopRecording() {
+  if (!recording) return;
+  window.removeEventListener("keydown", recording.handler, true);
+  recording.btn.classList.remove("listening"); recording.btn.textContent = t("record");
+  recording = null;
+}
+
+function renderStatus() {
+  const s = $("status"); s.textContent = "";
+  if (!conn) { s.append(el("span", { class: "pill" }, el("span", { class: "dot" }), t("notConnected"))); }
+  else {
+    s.append(el("span", { class: "pill live" }, el("span", { class: "dot" }), conn.kind === "usb" ? t("connectedUsb") : t("connectedBle")));
+    if (status) {
+      s.append(el("span", { class: "pill", text: status.usb ? t("charging") : `${t("battery")} ${status.bat}%` }));
+      s.append(el("span", { class: "pill", text: status.mac ? t("modeMac") : t("modeWin") }));
+      s.append(el("span", { class: "pill", text: `${t("fw")} ${status.fw}` }));
+    }
+  }
+  $("btn-usb").hidden = !!conn; $("btn-ble").hidden = !!conn; $("btn-disc").hidden = !conn;
+  $("btn-test").disabled = !conn;
+  $("btn-test").classList.toggle("on", testing);
+  $("btn-test").querySelector("span").textContent = testing ? t("testOn") : t("testKeys");
+}
+
+let barMsg = null;
+function say(text, kind = "") { barMsg = { text, kind }; renderBar(); }
+function renderBar() {
+  const m = $("msg"); m.textContent = ""; m.className = "msg";
+  if (barMsg) { m.textContent = barMsg.text; if (barMsg.kind) m.classList.add(barMsg.kind); }
+  else if (dirty) { m.append(el("span", { class: "dirty-dot" }), t("unsent")); }
+  $("btn-send").disabled = !conn;
+}
+
+// ============================================================
+// Connections
+// ============================================================
+let rxJson = "", waiters = [];
+function waitFor(types, ms = 4000) {
+  return new Promise((resolve, reject) => {
+    const w = { types, resolve, timer: setTimeout(() => { waiters = waiters.filter(x => x !== w); reject(new Error("timeout")); }, ms) };
+    waiters.push(w);
+  });
+}
+function handleMessage(type, body) {
+  switch (type) {
+    case "D": rxJson += body; break;
+    case "E": { const j = rxJson; rxJson = ""; resolveWaiters("E", j); break; }
+    case "S": try { status = JSON.parse(body); testing = status.test > 0; renderStatus(); renderPages(); renderDevice(); } catch (e) {} resolveWaiters("S", body); break;
+    case "K": resolveWaiters("K"); break;
+    case "X": resolveWaiters("X", body); break;
+    case "A": resolveWaiters("A"); break;
+    case "P": pressed.add(Number(body)); renderDevice(); break;
+    case "R": pressed.delete(Number(body)); renderDevice(); break;
+    case "C": $("knob").classList.toggle("pressed", body === "1"); break;
+    case "T": { const k = $("knob"); const r = (Number(k.dataset.r || 0) + (Number(body) > 0 ? 18 : -18)); k.dataset.r = r; k.style.transform = `rotate(${r}deg)`; break; }
+    case "N": if (status) status.page = Number(body); if (cfg.pages[Number(body)]) sel.page = Number(body); renderAll(); break;
+  }
+}
+function resolveWaiters(type, value) {
+  const hit = waiters.filter(w => w.types.includes(type));
+  waiters = waiters.filter(w => !w.types.includes(type));
+  hit.forEach(w => { clearTimeout(w.timer); w.resolve({ type, value }); });
+}
+
+// ----- USB (Web Serial): one line per message, "@" + type + text -----
+async function connectUsb() {
+  if (!("serial" in navigator)) { say(t("noSerial"), "err"); return; }
+  let port;
+  try { port = await navigator.serial.requestPort({ filters: [{ usbVendorId: 0x303A }] }); } catch (e) { return; }
+  try { await port.open({ baudRate: 115200 }); } catch (e) { say(e.message, "err"); return; }
+  const enc = new TextEncoder();
+  const writer = port.writable.getWriter();
+  let reader = null, closed = false;
+  const c = {
+    kind: "usb",
+    async write(type, payload = "") { await writer.write(enc.encode("@" + type + payload + "\n")); },
+    async close() {
+      closed = true;
+      try { await writer.write(enc.encode("@Q\n")); } catch (e) {}
+      try { await reader?.cancel(); } catch (e) {}
+      try { writer.releaseLock(); } catch (e) {}
+      try { await port.close(); } catch (e) {}
+    },
+  };
+  (async () => {
+    const dec = new TextDecoder(); let buf = "";
+    try {
+      while (port.readable && !closed) {
+        reader = port.readable.getReader();
+        try {
+          for (;;) {
+            const { value, done } = await reader.read(); if (done) break;
+            buf += dec.decode(value, { stream: true });
+            let i;
+            while ((i = buf.indexOf("\n")) >= 0) {
+              const line = buf.slice(0, i).replace(/\r$/, ""); buf = buf.slice(i + 1);
+              if (line.startsWith("@") && line.length >= 2) handleMessage(line[1], line.slice(2));
+            }
+          }
+        } finally { reader.releaseLock(); }
+      }
+    } catch (e) {}
+    if (!closed) lostConnection();
+  })();
+  port.addEventListener?.("disconnect", () => { if (!closed) lostConnection(); });
+  await startSession(c);
+}
+
+// ----- Bluetooth (Web Bluetooth): same messages, first byte = type -----
+const SERVICE = "7a0b0001-5d1c-4b8e-9f3a-6d2c1e0a4b10", CTRL = "7a0b0002-5d1c-4b8e-9f3a-6d2c1e0a4b10";
+async function connectBle() {
+  if (!navigator.bluetooth) { say(t("noBle"), "err"); return; }
+  let dev;
+  say(t("bleHint"));
+  try { dev = await navigator.bluetooth.requestDevice({ filters: [{ services: [SERVICE] }], optionalServices: [SERVICE] }); } catch (e) { barMsg = null; renderBar(); return; }
+  try {
+    const gatt = await dev.gatt.connect();
+    const svc = await gatt.getPrimaryService(SERVICE);
+    const ch = await svc.getCharacteristic(CTRL);
+    const dec = new TextDecoder(); let closed = false;
+    ch.addEventListener("characteristicvaluechanged", (ev) => {
+      const v = new Uint8Array(ev.target.value.buffer); if (!v.length) return;
+      const type = String.fromCharCode(v[0]);
+      let body;
+      if ("PRCN".includes(type)) body = String(v[1] ?? 0);
+      else if (type === "T") body = String((v[1] ?? 0) > 127 ? v[1] - 256 : v[1]);
+      else body = dec.decode(v.slice(1));
+      handleMessage(type, body);
+    });
+    await ch.startNotifications();
+    dev.addEventListener("gattserverdisconnected", () => { if (!closed) lostConnection(); });
+    const enc = new TextEncoder();
+    let queue = Promise.resolve();
+    const c = {
+      kind: "ble",
+      write(type, payload = "") {
+        let bytes;
+        if (type === "M") bytes = new Uint8Array([77, Number(payload) || 0]);
+        else { const p = enc.encode(payload); bytes = new Uint8Array(p.length + 1); bytes[0] = type.charCodeAt(0); bytes.set(p, 1); }
+        queue = queue.then(() => ch.writeValueWithResponse(bytes));
+        return queue;
+      },
+      async close() { closed = true; try { await ch.stopNotifications(); } catch (e) {} try { gatt.disconnect(); } catch (e) {} },
+    };
+    await startSession(c);
+  } catch (e) { say(e.message, "err"); }
+}
+
+let statusTimer = null;
+async function startSession(c) {
+  conn = c; status = null; testing = false; renderStatus(); renderBar();
+  // the USB may restart the macropad when the port opens: ask for the status until it answers
+  let ok = false;
+  for (let i = 0; i < 12 && !ok; i++) {
+    try { await c.write("S"); await waitFor(["S"], 600); ok = true; } catch (e) {}
+  }
+  if (!ok) { say(t("noResponse"), "err"); await disconnect(true); return; }
+  statusTimer = setInterval(() => conn && conn.write("S").catch(() => {}), 5000);
+  if (dirty) { say(t("unsent")); renderAll(); return; }
+  await readDevice();
+}
+async function readDevice() {
+  if (!conn) return;
+  say(t("reading"));
+  try {
+    rxJson = ""; await conn.write("G");
+    const r = await waitFor(["E"], 8000);
+    cfg = normalize(JSON.parse(r.value)); sel.page = Math.min(status?.page ?? 0, cfg.pages.length - 1);
+    setDirty(false); say(t("readDone"), "ok"); renderAll();
+  } catch (e) { say(t("noResponse"), "err"); }
+}
+async function sendConfig() {
+  if (!conn) return;
+  stopRecording();
+  const json = JSON.stringify(cfg);
+  say(t("sending"));
+  $("btn-send").disabled = true;
+  try {
+    if (conn.kind === "usb") {
+      await conn.write("B"); await waitFor(["A"]);
+      for (let i = 0; i < json.length; i += 180) { await conn.write("D", json.slice(i, i + 180)); await waitFor(["A"]); }
+      await conn.write("E");
+    } else {
+      await conn.write("B");
+      // chunks on character boundaries so multi-byte letters aren't split across writes
+      let i = 0;
+      while (i < json.length) { let j = Math.min(json.length, i + 160); await conn.write("D", json.slice(i, j)); i = j; }
+      await conn.write("E");
+    }
+    const r = await waitFor(["K", "X"], 8000);
+    if (r.type === "K") { setDirty(false); say(t("sent"), "ok"); conn.write("S"); }
+    else say(t("sendErr") + r.value, "err");
+  } catch (e) { say(t("noResponse"), "err"); }
+  renderBar();
+}
+async function disconnect(silent) {
+  clearInterval(statusTimer);
+  const c = conn; conn = null; status = null; testing = false; pressed.clear();
+  if (c) await c.close();
+  if (!silent) { barMsg = null; }
+  renderAll();
+}
+function lostConnection() {
+  if (!conn) return;
+  clearInterval(statusTimer); conn = null; status = null; testing = false; pressed.clear();
+  say(t("lost"), "err"); renderAll();
+}
+
+// ============================================================
+// Confirm dialog, files, settings
+// ============================================================
+function confirmBox(title, text) {
+  return new Promise(res => {
+    const d = $("dlg-confirm"); $("cf-title").textContent = title; $("cf-text").textContent = text;
+    d.addEventListener("close", () => res(d.returnValue === "yes"), { once: true }); d.showModal();
+  });
+}
+function saveFile() {
+  const blob = new Blob([JSON.stringify(cfg, null, 2)], { type: "application/json" });
+  const a = el("a", { href: URL.createObjectURL(blob), download: "macropad_keys.json" });
+  document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 2000);
+}
+$("file-in").addEventListener("change", async () => {
+  const f = $("file-in").files[0]; if (!f) return;
+  try { cfg = normalize(JSON.parse(await f.text())); sel = { page: 0, target: "key", index: 0 }; setDirty(); say(t("fileOk"), "ok"); renderAll(); }
+  catch (e) { say(t("fileErr"), "err"); }
+  $("file-in").value = "";
+});
+function openSettings() {
+  const s = cfg.set;
+  $("s-rev").checked = s.rev; $("s-rot").checked = s.rot; $("s-steps").value = String(s.steps); $("s-disp").value = s.disp; $("s-sleep").value = s.sleep;
+  $("dlg-settings").showModal();
+}
+$("dlg-settings").addEventListener("close", () => {
+  const s = cfg.set, before = JSON.stringify(s);
+  s.rev = $("s-rev").checked; s.rot = $("s-rot").checked; s.steps = Number($("s-steps").value);
+  s.disp = Math.max(0, Math.min(3600, Math.round(Number($("s-disp").value) || 0)));
+  s.sleep = Math.max(0, Math.min(240, Math.round(Number($("s-sleep").value) || 0)));
+  if (JSON.stringify(s) !== before) setDirty();
+});
+
+// ============================================================
+// Wiring the UI
+// ============================================================
+$("btn-usb").addEventListener("click", connectUsb);
+$("btn-ble").addEventListener("click", connectBle);
+$("btn-disc").addEventListener("click", () => disconnect(false));
+$("btn-send").addEventListener("click", sendConfig);
+$("btn-save").addEventListener("click", saveFile);
+$("btn-open").addEventListener("click", () => $("file-in").click());
+$("btn-settings").addEventListener("click", openSettings);
+$("btn-defaults").addEventListener("click", async () => {
+  if (!(await confirmBox(t("defTitle"), t("defText")))) return;
+  cfg = normalize(clone(DEFAULTS)); sel = { page: 0, target: "key", index: 0 }; setDirty(); say(t("defDone")); renderAll();
+});
+$("btn-test").addEventListener("click", async () => {
+  if (!conn) return; testing = !testing; await conn.write("M", testing ? "1" : "0"); renderStatus(); renderDevice();
+});
+$("knob").addEventListener("click", () => { sel.target = "knob"; renderDevice(); renderInspector(); });
+$("page-name").addEventListener("input", () => {
+  const inp = $("page-name"); const v = displayText(inp.value.toUpperCase(), 8); if (v !== inp.value) inp.value = v;
+  page().n = v; $("page-name-count").textContent = Array.from(v).length + "/8"; changed();
+});
+$("pg-add").addEventListener("click", () => {
+  if (cfg.pages.length >= 8) return;
+  cfg.pages.splice(sel.page + 1, 0, { n: t("newPage") + " " + (cfg.pages.length + 1), k: Array.from({ length: 9 }, A.none), kl: "Volume", cw: A.media(0xE9), ccw: A.media(0xEA) });
+  cfg.pages[sel.page + 1].n = displayText(cfg.pages[sel.page + 1].n, 8);
+  sel = { page: sel.page + 1, target: "key", index: 0 }; setDirty(); renderAll();
+});
+$("pg-dup").addEventListener("click", () => {
+  if (cfg.pages.length >= 8) return;
+  const c = clone(page()); c.n = displayText(c.n.slice(0, 7) + "2", 8);
+  cfg.pages.splice(sel.page + 1, 0, c); sel.page++; setDirty(); renderAll();
+});
+$("pg-del").addEventListener("click", async () => {
+  if (cfg.pages.length <= 1) return;
+  if (!(await confirmBox(t("delTitle"), t("delText").replace("{n}", page().n)))) return;
+  cfg.pages.splice(sel.page, 1); sel.page = Math.min(sel.page, cfg.pages.length - 1); setDirty(); renderAll();
+});
+function movePage(d) {
+  const j = sel.page + d; if (j < 0 || j >= cfg.pages.length) return;
+  const [p] = cfg.pages.splice(sel.page, 1); cfg.pages.splice(j, 0, p); sel.page = j; setDirty(); renderAll();
+}
+$("pg-up").addEventListener("click", () => movePage(-1));
+$("pg-down").addEventListener("click", () => movePage(1));
+window.addEventListener("beforeunload", (e) => { if (conn?.kind === "usb") conn.close(); if (dirty) { e.preventDefault(); e.returnValue = ""; } });
+
+// language
+function setLang(l) {
+  lang = l; document.documentElement.lang = l; document.documentElement.dataset.lang = l;
+  document.querySelectorAll("[data-set-lang]").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.setLang === l)));
+  try { localStorage.setItem("lang", l); } catch (e) {}
+  applyTexts(); if (cfg) renderAll();
+}
+document.querySelectorAll("[data-set-lang]").forEach(b => b.addEventListener("click", () => setLang(b.dataset.setLang)));
+
+(async function init() {
+  let saved = null; try { saved = localStorage.getItem("lang"); } catch (e) {}
+  lang = saved || ((navigator.language || "en").toLowerCase().startsWith("it") ? "it" : "en");
+  try { DEFAULTS = await (await fetch("default_config.json")).json(); } catch (e) { DEFAULTS = { v: 1, set: { rev: false, rot: false, steps: 4, disp: 60, sleep: 15 }, pages: [{ n: "PAGINA 1", k: Array.from({ length: 9 }, A.none), kl: "Volume", cw: A.media(0xE9), ccw: A.media(0xEA) }] }; }
+  cfg = normalize(clone(DEFAULTS));
+  setLang(lang);
+  if (!("serial" in navigator)) $("status").after(el("p", { class: "note unsupported", text: t("noSerial") }));
+})();
+</script>
+</body>
+</html>
