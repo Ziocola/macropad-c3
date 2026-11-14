@@ -5,7 +5,7 @@
 **Nine keys. One knob. Zero PCBs.**
 
 An open-source Bluetooth macropad with 9 mechanical keys, a rotary knob and an OLED that labels every key.
-You hand-wire it around an ESP32-C3 SuperMini and print it without supports.
+You hand-wire it around an ESP32-C3 SuperMini and print it on any FDM printer.
 
 [![Firmware & website](https://github.com/Ziocola/macropad-c3/actions/workflows/firmware-and-site.yml/badge.svg)](https://github.com/Ziocola/macropad-c3/actions/workflows/firmware-and-site.yml)
 [![Code: MIT](https://img.shields.io/badge/code-MIT-f57a1f)](LICENSE)
@@ -24,7 +24,7 @@ You hand-wire it around an ESP32-C3 SuperMini and print it without supports.
 - **Up to 8 pages.** Each page sets its own knob action: volume, scrolling, tabs, zoom or any shortcut. A short press on the knob moves to the next page.
 - **Battery powered**: 700 mAh LiPo, USB-C charging, power switch, battery level on screen. The display sleeps after 1 minute and the ESP32 after 15; the knob wakes it.
 - **Hand-wired**: off-the-shelf modules and through-hole parts, no PCB.
-- **Solid case**: M3 screws into brass heat-set inserts. No supports needed.
+- **Solid case**: M3 screws into brass heat-set inserts. Only the top shell needs supports.
 
 ## Flash the firmware
 
@@ -91,13 +91,13 @@ A vector version is in [`docs/images/wiring.svg`](docs/images/wiring.svg).
 
 | File | Colour | Notes |
 |---|---|---|
-| `hardware/stl/macropad_top_shell.stl` | black | upside down, no supports |
+| `hardware/stl/macropad_top_shell.stl` | black | upside down, **tree supports (auto)** |
 | `hardware/stl/macropad_bottom.stl` | black | logo towards the plate |
 | `hardware/stl/keycaps_x9.stl`, `knob.stl` | orange | top face on the plate |
 | `hardware/stl/oled_clamp.stl` | black | |
 | `hardware/stl/test/*.stl` | any | fit tests, print these first |
 
-[`hardware/bambu/Macropad_C3_A1.3mf`](hardware/bambu/Macropad_C3_A1.3mf) is a ready-made Bambu Studio project for the A1 with a 0.4 mm nozzle. It has 4 plates and uses PLA, 0.20 mm layers, 3 walls and 15% gyroid infill.
+[`hardware/bambu/Macropad_C3_A1.3mf`](hardware/bambu/Macropad_C3_A1.3mf) is a ready-made Bambu Studio project for the A1 with a 0.4 mm nozzle. It has 4 plates and uses PLA, 0.20 mm layers, 3 walls and 15% gyroid infill, with tree supports on the top shell only.
 
 **Fit tests:** `test_switch`, `test_keycap`, `test_oled`, `test_knob` and `test_insert` are marked with 1–4 dots. Pick the size that fits best on your printer and set it in [`hardware/case/macropad_c3.scad`](hardware/case/macropad_c3.scad), which is fully parametric (OpenSCAD).
 

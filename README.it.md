@@ -5,7 +5,7 @@
 **Nove tasti. Una manopola. Zero PCB.**
 
 Macropad Bluetooth open source con 9 tasti meccanici, una manopola e un display OLED che mostra a cosa serve ogni tasto.
-Si cabla a mano attorno a un ESP32-C3 SuperMini e si stampa senza supporti.
+Si cabla a mano attorno a un ESP32-C3 SuperMini e si stampa con qualsiasi stampante FDM.
 
 ### [⚡ Programmalo dal browser](https://ziocola.github.io/macropad-c3/) · [🇬🇧 English](README.md)
 
@@ -20,7 +20,7 @@ Si cabla a mano attorno a un ESP32-C3 SuperMini e si stampa senza supporti.
 - **Fino a 8 pagine**, ognuna con la sua funzione per la manopola: volume, scorrimento, schede, zoom o qualsiasi scorciatoia. Una pressione breve della manopola passa alla pagina dopo.
 - **A batteria**: LiPo da 700 mAh, ricarica USB-C, interruttore, livello della batteria sul display. Il display si spegne dopo 1 minuto e l'ESP32 dopo 15; la manopola lo risveglia.
 - **Cablato a mano**: moduli già pronti e componenti a foro passante, niente PCB.
-- **Guscio robusto**: viti M3 in inserti filettati in ottone, nessun supporto di stampa.
+- **Guscio robusto**: viti M3 in inserti filettati in ottone. Solo il guscio superiore richiede i supporti.
 
 ## Programmare la scheda
 
@@ -87,13 +87,13 @@ I file sono in `hardware/stl/`.
 
 | File | Colore | Note |
 |---|---|---|
-| `macropad_top_shell.stl` | nero | capovolto, senza supporti |
+| `macropad_top_shell.stl` | nero | capovolto, **supporti ad albero (automatici)** |
 | `macropad_bottom.stl` | nero | logo verso il piatto |
 | `keycaps_x9.stl`, `knob.stl` | arancione | faccia superiore sul piatto |
 | `oled_clamp.stl` | nero | |
 | `test/*.stl` | qualsiasi | prove di incastro, da stampare per prime |
 
-[`hardware/bambu/Macropad_C3_A1.3mf`](hardware/bambu/Macropad_C3_A1.3mf) è il progetto Bambu Studio pronto per la A1 con ugello 0,4. Ha 4 piatti: PLA, strato 0,20 mm, 3 pareti, gyroid 15%.
+[`hardware/bambu/Macropad_C3_A1.3mf`](hardware/bambu/Macropad_C3_A1.3mf) è il progetto Bambu Studio pronto per la A1 con ugello 0,4. Ha 4 piatti: PLA, strato 0,20 mm, 3 pareti, gyroid 15%, supporti ad albero solo sul guscio.
 
 **Inserti:** spingi i quattro inserti M3 nelle torrette del guscio con il saldatore a 220–230 °C finché sono a filo. Poi chiudi dal basso con viti M3 × 12 svasate. Prima stampa `test_insert.stl` per scegliere il foro.
 
