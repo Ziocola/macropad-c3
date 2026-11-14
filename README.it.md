@@ -46,23 +46,25 @@ A ogni push su `main`, GitHub Actions compila il firmware e lo pubblica sulla pa
 
 ## Componenti
 
-| Pezzo | Q.tà |
-|---|---|
-| ESP32-C3 SuperMini | 1 |
-| Caricatore TP4056 USB-C con protezione (14 × 18 mm) | 1 |
-| LiPo 802535, 700 mAh | 1 |
-| OLED I2C 0,96" 128×64 (GND VCC SCL SDA) | 1 |
-| Encoder EC11 con pulsante, albero zigrinato 6 mm accorciato a 12,5 mm | 1 |
-| Switch MX a 2 pin (es. Kailh Box Brown) | 9 |
-| Diodi 1N4148 | 9 |
-| Diodo Schottky 1N5819 | 1 |
-| Resistenze 100 kΩ | 2 |
-| Interruttore a slitta SS12D00 | 1 |
-| Inserti M3 a caldo, lunghi 5,7 mm, Ø esterno 4,6 | 4 |
-| Viti M3 × 12 svasate | 4 |
-| Viti M2 × 6 autofilettanti (barretta del display) | 2 |
-| Piedini in silicone Ø 10 mm | 4 |
-| Filo 28 AWG, guaina termorestringente | — |
+| Pezzo | Q.tà | AliExpress | Variante da scegliere |
+|---|---|---|---|
+| ESP32-C3 SuperMini | 1 | [link](https://it.aliexpress.com/item/1005005967641936.html) | TENSTAR |
+| Caricatore TP4056 USB-C con protezione, mini 14 × 18 mm | 1 | [link](https://it.aliexpress.com/item/1005009186628976.html) | Type-C · controlla che sia la scheda piccola 14 × 18 mm |
+| LiPo 802535, 700 mAh | 1 | [link](https://it.aliexpress.com/item/1005013535446410.html) | 1PCS |
+| OLED I2C 0,96" 128×64, 4 pin | 1 | [link](https://it.aliexpress.com/item/1005004421432934.html) | LCD · ordine dei pin GND VCC SCL SDA |
+| Encoder EC11 con pulsante | 1 | [link](https://it.aliexpress.com/item/1005004907970664.html) | **20mm Plum Handle** (albero zigrinato, da accorciare a 12,5 mm) |
+| Switch MX a 2 pin, Kailh Box Brown | 9 | [link](https://it.aliexpress.com/item/1005003436102892.html) | KBDiy · Brown · confezione da 10 |
+| Diodi 1N4148 e 1N5819 | 9 + 1 | [link](https://it.aliexpress.com/item/1005012172771559.html) | "1N4148 100 pezzi" **e** "1N5819 100 pezzi" |
+| Resistenze 100 kΩ 1/4 W | 2 | [link](https://it.aliexpress.com/item/1005002489867848.html) | 100K |
+| Interruttore a slitta SS12D00 | 1 | [link](https://it.aliexpress.com/item/1005002156794748.html) | 10 pezzi |
+| Inserti M3 a caldo, lunghi 5,7 mm, Ø 4,6 | 4 | [link](https://it.aliexpress.com/item/1005004185759697.html) | M3 × 5,7 × 4,6 |
+| Viti M3 × 12 svasate | 4 | [link](https://it.aliexpress.com/item/32968097507.html) | M3 · 12 mm |
+| Viti M2 × 6 autofilettanti (barretta del display) | 2 | [link](https://it.aliexpress.com/item/1005006739652380.html) | M2 |
+| Piedini in silicone Ø 10 mm | 4 | [link](https://it.aliexpress.com/item/32845551931.html) | 10 × 3 mm |
+| Filo in silicone 28 AWG | — | [link](https://it.aliexpress.com/item/1005005450660428.html) | 28AWG |
+| Guaina termorestringente | — | [link](https://it.aliexpress.com/item/1005010534247083.html) | kit |
+
+Le inserzioni cambiano spesso: controlla variante e foto prima di ordinare. Filo, guaina e viti spesso sono già nel cassetto.
 
 ## Collegamenti
 

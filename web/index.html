@@ -160,6 +160,9 @@ th, td { text-align: left; padding: 12px 18px; border-bottom: 1px solid var(--li
 th { font: 600 .72rem var(--mono); letter-spacing: .1em; text-transform: uppercase; color: var(--fg-3); background: var(--bg-2); }
 tr:last-child td { border-bottom: 0; }
 td.n { font-family: var(--mono); color: var(--accent); white-space: nowrap; }
+td a { color: var(--fg); text-decoration: underline; text-decoration-color: var(--line-2); text-underline-offset: 3px; }
+td a:hover { color: var(--accent-2); text-decoration-color: var(--accent); }
+td .var { color: var(--fg-3); font-size: .82rem; margin-top: 2px; }
 td.pin { font-family: var(--mono); white-space: nowrap; }
 .two { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-items: start; }
 .two > * { min-width: 0; }
@@ -390,8 +393,8 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 14px 28px; align-items: cent
       <div class="sec-head">
         <div class="eyebrow"><span lang="en">Bill of materials</span><span lang="it">Distinta componenti</span></div>
         <h2><span lang="en">What you need</span><span lang="it">Cosa serve</span></h2>
-        <p class="lead" lang="en">Common, inexpensive modules and through-hole parts you can find anywhere.</p>
-        <p class="lead" lang="it">Moduli comuni ed economici e componenti a foro passante, facili da trovare.</p>
+        <p class="lead" lang="en">Common, inexpensive parts. Each name links to an AliExpress listing; the grey line says which variant to pick. Listings change, so check the photos before ordering.</p>
+        <p class="lead" lang="it">Componenti comuni ed economici. Ogni nome porta a un'inserzione AliExpress; la riga grigia dice quale variante scegliere. Le inserzioni cambiano, quindi controlla le foto prima di ordinare.</p>
       </div>
       <img src="images/back.png" alt="Back of the macropad with the USB and charging ports" width="1600" height="1200" style="border-radius: var(--radius)">
     </div>
@@ -399,21 +402,21 @@ footer .wrap { display: flex; flex-wrap: wrap; gap: 14px 28px; align-items: cent
       <table>
         <thead><tr><th><span lang="en">Part</span><span lang="it">Pezzo</span></th><th><span lang="en">Qty</span><span lang="it">Q.tà</span></th></tr></thead>
         <tbody>
-          <tr><td>ESP32-C3 SuperMini</td><td class="n">1</td></tr>
-          <tr><td><span lang="en">TP4056 USB-C charger with protection, 14 × 18 mm</span><span lang="it">Caricatore TP4056 USB-C con protezione, 14 × 18 mm</span></td><td class="n">1</td></tr>
-          <tr><td><span lang="en">LiPo battery 802535, 700 mAh</span><span lang="it">Batteria LiPo 802535, 700 mAh</span></td><td class="n">1</td></tr>
-          <tr><td><span lang="en">0.96" I2C OLED 128×64 (GND VCC SCL SDA)</span><span lang="it">OLED I2C 0,96" 128×64 (GND VCC SCL SDA)</span></td><td class="n">1</td></tr>
-          <tr><td><span lang="en">EC11 encoder with push, 6 mm shaft cut to 12.5 mm</span><span lang="it">Encoder EC11 con pulsante, albero 6 mm accorciato a 12,5 mm</span></td><td class="n">1</td></tr>
-          <tr><td><span lang="en">MX switches, 2 pins (e.g. Kailh Box Brown)</span><span lang="it">Switch MX a 2 pin (es. Kailh Box Brown)</span></td><td class="n">9</td></tr>
-          <tr><td><span lang="en">1N4148 diodes</span><span lang="it">Diodi 1N4148</span></td><td class="n">9</td></tr>
-          <tr><td><span lang="en">1N5819 Schottky diode</span><span lang="it">Diodo Schottky 1N5819</span></td><td class="n">1</td></tr>
-          <tr><td><span lang="en">100 kΩ resistors</span><span lang="it">Resistenze 100 kΩ</span></td><td class="n">2</td></tr>
-          <tr><td><span lang="en">SS12D00 slide switch</span><span lang="it">Interruttore a slitta SS12D00</span></td><td class="n">1</td></tr>
-          <tr><td><span lang="en">M3 heat-set inserts, 5.7 mm long, 4.6 mm OD</span><span lang="it">Inserti M3 a caldo, lunghi 5,7 mm, Ø esterno 4,6</span></td><td class="n">4</td></tr>
-          <tr><td><span lang="en">M3 × 12 countersunk screws</span><span lang="it">Viti M3 × 12 svasate</span></td><td class="n">4</td></tr>
-          <tr><td><span lang="en">M2 × 6 self-tapping screws</span><span lang="it">Viti M2 × 6 autofilettanti</span></td><td class="n">2</td></tr>
-          <tr><td><span lang="en">Silicone feet, Ø 10 mm</span><span lang="it">Piedini in silicone Ø 10 mm</span></td><td class="n">4</td></tr>
-          <tr><td><span lang="en">28 AWG wire and heat-shrink</span><span lang="it">Filo 28 AWG e guaina termorestringente</span></td><td class="n">—</td></tr>
+          <tr><td><a href="https://www.aliexpress.com/item/1005005967641936.html" target="_blank" rel="noopener"><span lang="en">ESP32-C3 SuperMini</span><span lang="it">ESP32-C3 SuperMini</span></a><div class="var"><span lang="en">TENSTAR</span><span lang="it">TENSTAR</span></div></td><td class="n">1</td></tr>
+          <tr><td><a href="https://www.aliexpress.com/item/1005009186628976.html" target="_blank" rel="noopener"><span lang="en">TP4056 USB-C charger with protection, mini 14 × 18 mm</span><span lang="it">Caricatore TP4056 USB-C con protezione, mini 14 × 18 mm</span></a><div class="var"><span lang="en">Type-C · check it's the small 14 × 18 mm board</span><span lang="it">Type-C · controlla che sia la scheda piccola 14 × 18 mm</span></div></td><td class="n">1</td></tr>
+          <tr><td><a href="https://www.aliexpress.com/item/1005013535446410.html" target="_blank" rel="noopener"><span lang="en">LiPo 802535, 700 mAh</span><span lang="it">LiPo 802535, 700 mAh</span></a><div class="var"><span lang="en">1PCS</span><span lang="it">1PCS</span></div></td><td class="n">1</td></tr>
+          <tr><td><a href="https://www.aliexpress.com/item/1005004421432934.html" target="_blank" rel="noopener"><span lang="en">0.96" I2C OLED 128×64, 4 pins</span><span lang="it">OLED I2C 0,96" 128×64, 4 pin</span></a><div class="var"><span lang="en">LCD · pin order must be GND VCC SCL SDA</span><span lang="it">LCD · ordine dei pin GND VCC SCL SDA</span></div></td><td class="n">1</td></tr>
+          <tr><td><a href="https://www.aliexpress.com/item/1005004907970664.html" target="_blank" rel="noopener"><span lang="en">EC11 encoder with push button</span><span lang="it">Encoder EC11 con pulsante</span></a><div class="var"><span lang="en"><b>20mm Plum Handle</b> (knurled shaft, cut to 12.5 mm)</span><span lang="it"><b>20mm Plum Handle</b> (albero zigrinato, da accorciare a 12,5 mm)</span></div></td><td class="n">1</td></tr>
+          <tr><td><a href="https://www.aliexpress.com/item/1005003436102892.html" target="_blank" rel="noopener"><span lang="en">MX switches, 2 pins, Kailh Box Brown</span><span lang="it">Switch MX a 2 pin, Kailh Box Brown</span></a><div class="var"><span lang="en">KBDiy · Brown · pack of 10</span><span lang="it">KBDiy · Brown · confezione da 10</span></div></td><td class="n">9</td></tr>
+          <tr><td><a href="https://www.aliexpress.com/item/1005012172771559.html" target="_blank" rel="noopener"><span lang="en">1N4148 and 1N5819 diodes</span><span lang="it">Diodi 1N4148 e 1N5819</span></a><div class="var"><span lang="en">&quot;1N4148 100 pcs&quot; <b>and</b> &quot;1N5819 100 pcs&quot;</span><span lang="it">&quot;1N4148 100 pezzi&quot; <b>e</b> &quot;1N5819 100 pezzi&quot;</span></div></td><td class="n">9 + 1</td></tr>
+          <tr><td><a href="https://www.aliexpress.com/item/1005002489867848.html" target="_blank" rel="noopener"><span lang="en">100 kΩ resistors, 1/4 W</span><span lang="it">Resistenze 100 kΩ 1/4 W</span></a><div class="var"><span lang="en">100K</span><span lang="it">100K</span></div></td><td class="n">2</td></tr>
+          <tr><td><a href="https://www.aliexpress.com/item/1005002156794748.html" target="_blank" rel="noopener"><span lang="en">SS12D00 slide switch</span><span lang="it">Interruttore a slitta SS12D00</span></a><div class="var"><span lang="en">10 pcs</span><span lang="it">10 pezzi</span></div></td><td class="n">1</td></tr>
+          <tr><td><a href="https://www.aliexpress.com/item/1005004185759697.html" target="_blank" rel="noopener"><span lang="en">M3 heat-set inserts, 5.7 mm long, 4.6 mm OD</span><span lang="it">Inserti M3 a caldo, lunghi 5,7 mm, Ø 4,6</span></a><div class="var"><span lang="en">M3 × 5.7 × 4.6</span><span lang="it">M3 × 5,7 × 4,6</span></div></td><td class="n">4</td></tr>
+          <tr><td><a href="https://www.aliexpress.com/item/32968097507.html" target="_blank" rel="noopener"><span lang="en">M3 × 12 countersunk screws</span><span lang="it">Viti M3 × 12 svasate</span></a><div class="var"><span lang="en">M3 · 12 mm</span><span lang="it">M3 · 12 mm</span></div></td><td class="n">4</td></tr>
+          <tr><td><a href="https://www.aliexpress.com/item/1005006739652380.html" target="_blank" rel="noopener"><span lang="en">M2 × 6 self-tapping screws (display clamp)</span><span lang="it">Viti M2 × 6 autofilettanti (barretta del display)</span></a><div class="var"><span lang="en">M2</span><span lang="it">M2</span></div></td><td class="n">2</td></tr>
+          <tr><td><a href="https://www.aliexpress.com/item/32845551931.html" target="_blank" rel="noopener"><span lang="en">Silicone feet, Ø 10 mm</span><span lang="it">Piedini in silicone Ø 10 mm</span></a><div class="var"><span lang="en">10 × 3 mm</span><span lang="it">10 × 3 mm</span></div></td><td class="n">4</td></tr>
+          <tr><td><a href="https://www.aliexpress.com/item/1005005450660428.html" target="_blank" rel="noopener"><span lang="en">28 AWG silicone wire</span><span lang="it">Filo in silicone 28 AWG</span></a><div class="var"><span lang="en">28AWG</span><span lang="it">28AWG</span></div></td><td class="n">—</td></tr>
+          <tr><td><a href="https://www.aliexpress.com/item/1005010534247083.html" target="_blank" rel="noopener"><span lang="en">Heat-shrink tubing</span><span lang="it">Guaina termorestringente</span></a><div class="var"><span lang="en">kit</span><span lang="it">kit</span></div></td><td class="n">—</td></tr>
         </tbody>
       </table>
     </div>

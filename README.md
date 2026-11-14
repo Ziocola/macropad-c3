@@ -50,23 +50,25 @@ Every push to `main` builds the firmware with GitHub Actions and publishes it to
 
 ## Parts
 
-| Part | Qty |
-|---|---|
-| ESP32-C3 SuperMini | 1 |
-| TP4056 USB-C charger with protection (14 × 18 mm) | 1 |
-| LiPo 802535, 700 mAh | 1 |
-| 0.96" I2C OLED 128×64 (GND VCC SCL SDA) | 1 |
-| EC11 encoder with push button, 6 mm knurled shaft cut to 12.5 mm | 1 |
-| MX switches, 2 pins (e.g. Kailh Box Brown) | 9 |
-| 1N4148 diodes | 9 |
-| 1N5819 Schottky diode | 1 |
-| 100 kΩ resistors | 2 |
-| SS12D00 slide switch | 1 |
-| M3 heat-set inserts, 5.7 mm long, 4.6 mm OD | 4 |
-| M3 × 12 countersunk screws | 4 |
-| M2 × 6 self-tapping screws (display clamp) | 2 |
-| Silicone feet, Ø 10 mm | 4 |
-| 28 AWG wire, heat-shrink tubing | — |
+| Part | Qty | AliExpress | Variant to choose |
+|---|---|---|---|
+| ESP32-C3 SuperMini | 1 | [link](https://www.aliexpress.com/item/1005005967641936.html) | TENSTAR |
+| TP4056 USB-C charger with protection, mini 14 × 18 mm | 1 | [link](https://www.aliexpress.com/item/1005009186628976.html) | Type-C · check it's the small 14 × 18 mm board |
+| LiPo 802535, 700 mAh | 1 | [link](https://www.aliexpress.com/item/1005013535446410.html) | 1PCS |
+| 0.96" I2C OLED 128×64, 4 pins | 1 | [link](https://www.aliexpress.com/item/1005004421432934.html) | LCD · pin order must be GND VCC SCL SDA |
+| EC11 encoder with push button | 1 | [link](https://www.aliexpress.com/item/1005004907970664.html) | **20mm Plum Handle** (knurled shaft, cut to 12.5 mm) |
+| MX switches, 2 pins, Kailh Box Brown | 9 | [link](https://www.aliexpress.com/item/1005003436102892.html) | KBDiy · Brown · pack of 10 |
+| 1N4148 and 1N5819 diodes | 9 + 1 | [link](https://www.aliexpress.com/item/1005012172771559.html) | "1N4148 100 pcs" **and** "1N5819 100 pcs" |
+| 100 kΩ resistors, 1/4 W | 2 | [link](https://www.aliexpress.com/item/1005002489867848.html) | 100K |
+| SS12D00 slide switch | 1 | [link](https://www.aliexpress.com/item/1005002156794748.html) | 10 pcs |
+| M3 heat-set inserts, 5.7 mm long, 4.6 mm OD | 4 | [link](https://www.aliexpress.com/item/1005004185759697.html) | M3 × 5.7 × 4.6 |
+| M3 × 12 countersunk screws | 4 | [link](https://www.aliexpress.com/item/32968097507.html) | M3 · 12 mm |
+| M2 × 6 self-tapping screws (display clamp) | 2 | [link](https://www.aliexpress.com/item/1005006739652380.html) | M2 |
+| Silicone feet, Ø 10 mm | 4 | [link](https://www.aliexpress.com/item/32845551931.html) | 10 × 3 mm |
+| 28 AWG silicone wire | — | [link](https://www.aliexpress.com/item/1005005450660428.html) | 28AWG |
+| Heat-shrink tubing | — | [link](https://www.aliexpress.com/item/1005010534247083.html) | kit |
+
+Listings change often: check the variant and the photos before you order. Wire, heat-shrink and screws are often already in the drawer.
 
 ## Wiring
 
